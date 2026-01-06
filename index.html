@@ -71,13 +71,12 @@
     </nav>
 
     <script>
-        // 言語ごとのテキスト定義
         const uiText = {
             vi: { study: "Học tập", list: "Danh sách", finish: "Bạn đã hoàn thành!", jpTo: "Nhật → Việt", forTo: "Việt → Nhật" },
             id: { study: "Belajar", list: "Daftar", finish: "Kamu sudah selesai!", jpTo: "Jepang → Indo", forTo: "Indo → Jepang" }
         };
 
-        // データ (v: ベトナム語, i: インドネシア語)
+        // データ (修正済み: お起きる -> おきる)
         const allData = [
             { q: "あう", r: "au", v: "gặp", i: "bertemu", g: 1 },
             { q: "いく", r: "iku", v: "đi", i: "pergi", g: 1 },
@@ -112,7 +111,7 @@
             { q: "あげる", r: "ageru", v: "cho/tặng", i: "memberi", g: 2 },
             { q: "いれる", r: "ireru", v: "cho vào", i: "memasukkan", g: 2 },
             { q: "うまれる", r: "umareru", v: "sinh ra", i: "lahir", g: 2 },
-            { q: "お起きる", r: "okiru", v: "thức dậy", i: "bangun", g: 2 },
+            { q: "おきる", r: "okiru", v: "thức dậy", i: "bangun", g: 2 },
             { q: "おしえる", r: "oshieru", v: "dạy", i: "mengajar", g: 2 },
             { q: "おぼえる", r: "oboeru", v: "nhớ", i: "mengingat", g: 2 },
             { q: "かける", r: "kakeru", v: "gọi điện", i: "menelepon", g: 2 },
