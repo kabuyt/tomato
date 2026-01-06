@@ -3,284 +3,281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>トマト - N5 Test Mode</title>
-    <link rel="apple-touch-icon" href="images/icon.png">
+    <title>トマト N5 - Pro</title>
     <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding-bottom: 80px; overflow-x: hidden; }
-        .page { display: none; padding: 20px; animation: fadeIn 0.3s; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding: 0; }
+        .page { display: none; padding: 20px; min-height: 100vh; box-sizing: border-box; }
         .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        nav { position: fixed; bottom: 0; left:0; width: 100%; background: white; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 100; }
-        nav button { flex: 1; padding: 15px; border: none; background: none; font-weight: bold; font-size: 16px; color: #999; cursor: pointer; }
-        nav button.active-nav { color: #FF5252; border-top: 4px solid #FF5252; }
+        /* メニュー */
+        .logo { font-size: 50px; margin-top: 30px; }
+        .menu-grid { display: grid; gap: 15px; max-width: 400px; margin: 20px auto; padding: 10px; }
+        .menu-btn { 
+            padding: 20px; font-size: 20px; font-weight: bold; border: none; border-radius: 20px; 
+            background: white; border-bottom: 5px solid #FFCDD2; cursor: pointer; color: #FF5252; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .menu-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
+        .list-btn { background: #FFAB91; color: white; border-bottom-color: #D84315; margin-top: 10px; }
 
-        .card { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 400px; margin: 10px auto; border: 4px solid #FF5252; min-height: 320px; display: flex; flex-direction: column; justify-content: center; position: relative; }
-        .correct-jump { animation: tomato-jump 0.5s ease; }
-        @keyframes tomato-jump { 0% { transform: scale(1); } 30% { transform: scale(1.1) translateY(-20px); } 100% { transform: scale(1); } }
-        
-        .word { font-size: 42px; font-weight: bold; color: #FF5252; margin: 10px 0; min-height: 50px; }
+        /* モード選択ポップアップ風 */
+        #mode-selection { background: rgba(255,255,255,0.9); border-radius: 25px; padding: 20px; border: 3px solid #FF5252; margin-top: 20px; display: none; }
+
+        /* クイズカード */
+        .card { 
+            background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            max-width: 500px; margin: 10px auto; border: 4px solid #FF5252; min-height: 380px; 
+            display: flex; flex-direction: column; justify-content: center; position: relative; 
+        }
+        .word { font-size: 45px; font-weight: bold; color: #FF5252; margin: 10px 0; }
         .options { display: grid; gap: 10px; margin-top: 10px; }
-        .opt-btn { padding: 16px; font-size: 17px; border: none; border-radius: 15px; background: #FFEBEE; border-bottom: 4px solid #FFCDD2; cursor: pointer; }
-        .opt-btn:active { transform: translateY(2px); border-bottom-width: 1px; }
-
-        .group-title { background: #FF5252; color: white; padding: 5px 15px; border-radius: 20px; display: inline-block; margin: 20px 0 10px; font-size: 14px; }
-        .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 12px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
-        .list-ja { font-size: 20px; font-weight: bold; color: #FF5252; }
+        .opt-btn { padding: 18px; font-size: 18px; border: none; border-radius: 15px; background: #FFEBEE; border-bottom: 4px solid #FFCDD2; cursor: pointer; }
         
-        .mode-selector { background: #FF5252; padding: 10px; border-radius: 15px; display: inline-block; color: white; margin-bottom: 15px; font-size: 12px; }
-        select { border-radius: 5px; border: none; padding: 4px; cursor: pointer; background: white; margin: 0 5px; font-size: 12px; }
+        .mode-selector { background: #FF5252; padding: 10px; border-radius: 15px; display: inline-block; color: white; margin-bottom: 10px; font-size: 12px; }
+        select { border-radius: 5px; border: none; padding: 3px; background: white; margin: 0 5px; }
+        
+        .btn-back { background: #666; color: white; border: none; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; }
 
-        .result-score { font-size: 60px; font-weight: bold; color: #FF5252; margin: 10px 0; }
-        .btn-retry { background: #FF5252; color: white; border: none; padding: 15px 40px; border-radius: 50px; font-size: 18px; margin-top: 20px; cursor: pointer; box-shadow: 0 4px 0 #c0392b; }
-        .btn-retry:active { transform: translateY(2px); box-shadow: none; }
+        /* リストスタイル */
+        .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 12px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
+        .list-ja { font-size: 20px; font-weight: bold; color: #FF5252; text-align: left; }
     </style>
 </head>
 <body>
 
-    <div id="quiz-page" class="page active">
+    <div id="menu-page" class="page active">
+        <div class="logo">🍅</div>
+        <h1 style="color:#FF5252;">トマト N5</h1>
+        
+        <div class="menu-grid" id="category-buttons">
+            <button class="menu-btn" onclick="selectCategory('verb')">🍎 Động từ (Verb)</button>
+            <button class="menu-btn" onclick="selectCategory('noun')">📘 Danh từ (Noun)</button>
+            
+            <div id="mode-selection">
+                <p id="selected-label" style="font-weight:bold; color:#FF5252;"></p>
+                <div style="display:grid; gap:10px;">
+                    <button class="menu-btn" style="background:#FFF3E0;" onclick="startGame('practice')">📖 Luyện tập (All)</button>
+                    <button class="menu-btn" style="background:#FFEBEE;" onclick="startGame('test')">📝 Kiểm tra (10 Qs)</button>
+                    <button class="btn-back" onclick="cancelSelection()">Hủy (Back)</button>
+                </div>
+            </div>
+
+            <button class="menu-btn list-btn" onclick="showListPage()">📋 Danh sách (List)</button>
+        </div>
+    </div>
+
+    <div id="quiz-page" class="page">
+        <button class="btn-back" onclick="goToMenu()">← Menu</button>
         <div class="mode-selector">
-            Lang: 
-            <select id="lang-select" onchange="initGame()">
+            Lang: <select id="lang-select" onchange="initGame()">
                 <option value="vi">Tiếng Việt</option>
                 <option value="id">Indonesia</option>
             </select>
-            Mode:
-            <select id="mode-select" onchange="initGame()">
-                <option value="ja-to-foreign">JP → Foreign</option>
-                <option value="foreign-to-ja">Foreign → JP</option>
+            Type: <select id="teacher-switch" onchange="initGame()">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
             </select>
         </div>
 
         <div class="card" id="main-card">
             <div id="quiz-content">
-                <div id="progress" style="font-size:14px; color:#999">1 / 10</div>
+                <div id="progress" style="font-size:14px; color:#999">...</div>
                 <div id="word" class="word">...</div>
-                <div id="reading" style="color:#999; margin-bottom:15px; height:20px;">...</div>
+                <div id="reading" style="color:#999; margin-bottom:15px; height:24px; font-size:20px;"></div>
                 <div class="options" id="options-container"></div>
-                <div id="message" style="margin-top:15px; font-weight:bold; font-size:24px; height:30px; color:#FF5252;"></div>
+                <div id="teacher-controls" style="display:none; gap:10px; justify-content:center;">
+                    <button class="opt-btn" onclick="toggleAnswer()" style="background:#333; color:white;">Answer</button>
+                    <button class="opt-btn" onclick="nextQuestion()" style="background:#FF5252; color:white;">Next</button>
+                </div>
+                <div id="message" style="margin-top:20px; font-weight:bold; font-size:26px; height:30px; color:#FF5252;"></div>
             </div>
             <div id="result-content" style="display:none;">
-                <h2 id="result-msg">Kết quả</h2>
-                <div class="result-score" id="score-display">0%</div>
-                <p id="result-comment" style="font-size:18px; font-weight:bold;"></p>
-                <button class="btn-retry" onclick="initGame()">Try Again!</button>
+                <h2 style="color:#FF5252;">Kết quả</h2>
+                <div id="score-display" style="font-size:60px; font-weight:bold; color:#FF5252; margin:20px 0;"></div>
+                <button class="menu-btn" onclick="goToMenu()">Menu</button>
             </div>
         </div>
     </div>
 
     <div id="list-page" class="page">
-        <h2 id="list-title" style="color:#FF5252">Danh sách</h2>
-        <div id="verb-list-container"></div>
+        <button class="btn-back" onclick="goToMenu()">← Back</button>
+        <h2 style="color:#FF5252;">Danh sách từ vựng</h2>
+        <div id="list-container"></div>
     </div>
 
-    <nav>
-        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')">Học tập</button>
-        <button id="nav-list" onclick="showPage('list')">Danh sách</button>
-    </nav>
-
     <script>
-        const uiText = {
-            vi: { study: "Học tập", list: "Danh sách", finish: "Kết quả", comment: ["Cố lên!", "Khá lắm!", "Tuyệt vời!"], jpTo: "Nhật → Việt", forTo: "Việt → Nhật" },
-            id: { study: "Belajar", list: "Daftar", finish: "Hasil", comment: ["Semangat!", "Bagus!", "Luar Biasa!"], jpTo: "Jepang → Indo", forTo: "Indo → Jepang" }
-        };
-
         const allData = [
             { q: "あう", r: "au", v: "gặp", i: "bertemu", g: 1 },
             { q: "いく", r: "iku", v: "đi", i: "pergi", g: 1 },
-            { q: "いう", r: "iu", v: "nói", i: "berbicara", g: 1 },
-            { q: "うたう", r: "utau", v: "hát", i: "bernyanyi", g: 1 },
-            { q: "うる", r: "uru", v: "bán", i: "menjual", g: 1 },
-            { q: "おく", r: "oku", v: "đặt", i: "menaruh", g: 1 },
-            { q: "およぐ", r: "oyogu", v: "bơi", i: "berenang", g: 1 },
-            { q: "かう", r: "kau", v: "mua", i: "membeli", g: 1 },
-            { q: "かく", r: "kaku", v: "viết", i: "menulis", g: 1 },
-            { q: "きく", r: "kiku", v: "nghe", i: "mendengar", g: 1 },
-            { q: "きる", r: "kiru", v: "cắt", i: "memotong", g: 1 },
-            { q: "しる", r: "shiru", v: "biết", i: "tahu", g: 1 },
-            { q: "すう", r: "suu", v: "hút", i: "menghisap", g: 1 },
-            { q: "すむ", r: "sumu", v: "sống", i: "tinggal", g: 1 },
-            { q: "だす", r: "dasu", v: "lấy ra", i: "mengeluarkan", g: 1 },
-            { q: "たつ", r: "tatsu", v: "đứng", i: "berdiri", g: 1 },
-            { q: "つかう", r: "tsukau", v: "sử dụng", i: "menggunakan", g: 1 },
-            { q: "つくる", r: "tsukuru", v: "chế biến", i: "membuat", g: 1 },
-            { q: "てつだう", r: "tetsudau", v: "giúp đỡ", i: "membantu", g: 1 },
-            { q: "とる", r: "toru", v: "chụp/lấy", i: "mengambil", g: 1 },
-            { q: "ならう", r: "narau", v: "học", i: "belajar", g: 1 },
-            { q: "ぬぐ", r: "nugu", v: "cởi", i: "melepas", g: 1 },
-            { q: "のむ", r: "nomu", v: "uống", i: "minum", g: 1 },
-            { q: "のる", r: "noru", v: "lên xe", i: "naik", g: 1 },
-            { q: "はいる", r: "hairu", v: "vào", i: "masuk", g: 1 },
-            { q: "はなす", r: "hanasu", v: "nói chuyện", i: "bercerita", g: 1 },
-            { q: "まつ", r: "matsu", v: "đợi", i: "menunggu", g: 1 },
-            { q: "もつ", r: "motsu", v: "cầm/mang", i: "membawa", g: 1 },
-            { q: "やすむ", r: "yasumu", v: "nghỉ ngơi", i: "istirahat", g: 1 },
-            { q: "あける", r: "akeru", v: "mở", i: "membuka", g: 2 },
-            { q: "あげる", r: "ageru", v: "cho/tặng", i: "memberi", g: 2 },
-            { q: "いれる", r: "ireru", v: "cho vào", i: "memasukkan", g: 2 },
-            { q: "うまれる", r: "umareru", v: "sinh ra", i: "lahir", g: 2 },
             { q: "おきる", r: "okiru", v: "thức dậy", i: "bangun", g: 2 },
-            { q: "おしえる", r: "oshieru", v: "dạy", i: "mengajar", g: 2 },
-            { q: "おぼえる", r: "oboeru", v: "nhớ", i: "mengingat", g: 2 },
-            { q: "かける", r: "kakeru", v: "gọi điện", i: "menelepon", g: 2 },
-            { q: "かりる", r: "kariru", v: "mượn", i: "meminjam", g: 2 },
-            { q: "きえる", r: "kieru", v: "tắt", i: "padam", g: 2 },
-            { q: "しめる", r: "shimeru", v: "đóng", i: "menutup", g: 2 },
             { q: "たべる", r: "taberu", v: "ăn", i: "makan", g: 2 },
-            { q: "でる", r: "deru", v: "ra ngoài", i: "keluar", g: 2 },
-            { q: "ならべる", r: "naraberu", v: "xếp hàng", i: "menyusun", g: 2 },
-            { q: "ねる", r: "neru", v: "ngủ", i: "tidur", g: 2 },
-            { q: "みせる", r: "miseru", v: "cho xem", i: "memperlihatkan", g: 2 },
-            { q: "みる", r: "miru", v: "xem", i: "melihat", g: 2 },
-            { q: "わすれる", r: "wasureru", v: "quên", i: "lupa", g: 2 },
             { q: "くる", r: "kuru", v: "đến", i: "datang", g: 3 },
-            { q: "する", r: "suru", v: "làm", i: "melakukan", g: 3 },
-            { q: "さんぽする", r: "sanposuru", v: "đi dạo", i: "jalan-jalan", g: 3 }
+            { q: "がっこう", r: "gakkou", v: "trường học", i: "sekolah", g: 0 },
+            { q: "せんせい", r: "sensei", v: "giáo viên", i: "guru", g: 0 },
+            { q: "ともだち", r: "tomodachi", v: "bạn bè", i: "teman", g: 0 },
+            { q: "みず", r: "mizu", v: "nước", i: "air", g: 0 },
+            { q: "おかね", r: "okane", v: "tiền", i: "uang", g: 0 }
         ];
 
+        let currentCategory = '';
+        let currentMode = '';
         let quizList = [];
         let current = 0;
         let score = 0;
-        const TEST_COUNT = 10;
+        let isAnswerShowing = false;
 
         function speak(text) {
             const uttr = new SpeechSynthesisUtterance();
             uttr.text = text;
             uttr.lang = "ja-JP";
-            speechSynthesis.speak(uttr);
+            window.speechSynthesis.speak(uttr);
         }
 
-        function updateUI() {
-            const lang = document.getElementById("lang-select").value;
-            const text = uiText[lang];
-            document.getElementById("nav-quiz").innerText = text.study;
-            document.getElementById("nav-list").innerText = text.list;
-            document.getElementById("list-title").innerText = text.list;
-            const modeSelect = document.getElementById("mode-select");
-            modeSelect.options[0].text = text.jpTo;
-            modeSelect.options[1].text = text.forTo;
-        }
-
-        function showPage(pageId) {
+        function showPage(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId + '-page').classList.add('active');
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-nav'));
-            document.getElementById('nav-' + pageId).classList.add('active-nav');
-            if(pageId === 'list') renderList();
+            document.getElementById(id + '-page').classList.add('active');
         }
 
+        /* メニュー操作 */
+        function selectCategory(cat) {
+            currentCategory = cat;
+            document.getElementById('mode-selection').style.display = 'block';
+            document.getElementById('selected-label').innerText = cat === 'verb' ? "🍎 Động từ" : "📘 Danh từ";
+            // 他のボタンを隠す
+            document.querySelectorAll('.menu-btn:not(#mode-selection button)').forEach(b => b.style.display = 'none');
+        }
+
+        function cancelSelection() {
+            document.getElementById('mode-selection').style.display = 'none';
+            document.querySelectorAll('.menu-btn').forEach(b => b.style.display = 'block');
+        }
+
+        function startGame(mode) {
+            currentMode = mode;
+            showPage('quiz');
+            initGame();
+        }
+
+        function goToMenu() {
+            cancelSelection();
+            showPage('menu');
+        }
+
+        /* クイズ処理 */
         function initGame() {
-            updateUI();
+            const isTeacher = document.getElementById("teacher-switch").value === "teacher";
+            document.getElementById("teacher-controls").style.display = isTeacher ? "flex" : "none";
+            document.getElementById("options-container").style.display = isTeacher ? "none" : "grid";
             document.getElementById("quiz-content").style.display = "block";
             document.getElementById("result-content").style.display = "none";
-            document.getElementById("message").innerText = "";
-            quizList = [...allData].sort(() => Math.random() - 0.5);
+
+            let data = (currentCategory === 'verb') ? allData.filter(d => d.g > 0) : allData.filter(d => d.g === 0);
+            
+            if(currentMode === 'test') {
+                quizList = [...data].sort(() => Math.random() - 0.5).slice(0, 10);
+            } else {
+                quizList = [...data].sort(() => Math.random() - 0.5);
+            }
+            
             current = 0;
             score = 0;
             showQuestion();
         }
 
         function showQuestion() {
+            const isTeacher = document.getElementById("teacher-switch").value === "teacher";
             const lang = document.getElementById("lang-select").value;
-            const mode = document.getElementById("mode-select").value;
             const item = quizList[current];
-            const card = document.getElementById("main-card");
-            card.classList.remove("correct-jump");
-            document.getElementById("progress").innerText = (current + 1) + " / " + TEST_COUNT;
-            
-            let correct, opts;
-            const foreignMeaning = (lang === "vi") ? item.v : item.i;
-            const allForeignMeanings = allData.map(d => (lang === "vi") ? d.v : d.i);
+            isAnswerShowing = false;
 
-            if(mode === "ja-to-foreign") {
-                document.getElementById("word").innerText = item.q;
-                document.getElementById("reading").innerText = item.r;
-                correct = foreignMeaning;
-                opts = allForeignMeanings;
-            } else {
-                document.getElementById("word").innerText = foreignMeaning;
-                document.getElementById("reading").innerText = "";
-                correct = item.q;
-                opts = allData.map(d => d.q);
-            }
+            document.getElementById("progress").innerText = (current + 1) + " / " + quizList.length;
+            document.getElementById("word").innerText = item.q;
+            document.getElementById("reading").innerText = isTeacher ? "" : item.r;
+            document.getElementById("message").innerText = "";
 
-            let choices = [correct];
-            while(choices.length < 4) {
-                let r = opts[Math.floor(Math.random() * opts.length)];
-                if(!choices.includes(r)) choices.push(r);
-            }
-            choices.sort(() => Math.random() - 0.5);
+            if(!isTeacher) {
+                const correct = (lang === "vi") ? item.v : item.i;
+                const opts = allData.map(d => (lang === "vi") ? d.v : d.i);
+                let choices = [correct];
+                while(choices.length < 4) {
+                    let r = opts[Math.floor(Math.random() * opts.length)];
+                    if(!choices.includes(r)) choices.push(r);
+                }
+                choices.sort(() => Math.random() - 0.5);
 
-            const container = document.getElementById("options-container");
-            container.innerHTML = "";
-            choices.forEach(c => {
-                const btn = document.createElement("button");
-                btn.className = "opt-btn";
-                btn.innerText = c;
-                btn.onclick = () => {
-                    const isCorrect = (c === correct);
-                    const btnAll = container.querySelectorAll('button');
-                    btnAll.forEach(b => b.style.pointerEvents = "none"); // 連打防止
-
-                    if(isCorrect) {
-                        speak(item.q);
-                        card.classList.add("correct-jump");
-                        document.getElementById("message").innerText = "⭕ OK!";
-                        score++;
-                    } else {
-                        document.getElementById("message").innerText = "❌ " + correct;
-                    }
-
-                    setTimeout(() => {
-                        current++;
-                        if(current < TEST_COUNT) {
-                            document.getElementById("message").innerText = "";
-                            showQuestion();
+                const container = document.getElementById("options-container");
+                container.innerHTML = "";
+                choices.forEach(c => {
+                    const btn = document.createElement("button");
+                    btn.className = "opt-btn";
+                    btn.innerText = c;
+                    btn.onclick = () => {
+                        if(c === correct) {
+                            speak(item.q);
+                            document.getElementById("message").innerText = "⭕ OK!";
+                            score++;
+                            setTimeout(nextQuestion, 800);
                         } else {
-                            showResult();
+                            document.getElementById("message").innerText = "❌ " + correct;
+                            setTimeout(nextQuestion, 1500);
                         }
-                    }, 1000);
-                };
-                container.appendChild(btn);
-            });
+                    };
+                    container.appendChild(btn);
+                });
+            }
+        }
+
+        function toggleAnswer() {
+            const lang = document.getElementById("lang-select").value;
+            const item = quizList[current];
+            if(!isAnswerShowing) {
+                document.getElementById("message").innerText = (lang === "vi") ? item.v : item.i;
+                document.getElementById("reading").innerText = item.r;
+                speak(item.q);
+                isAnswerShowing = true;
+            } else {
+                document.getElementById("message").innerText = "";
+                document.getElementById("reading").innerText = "";
+                isAnswerShowing = false;
+            }
+        }
+
+        function nextQuestion() {
+            current++;
+            if(current < quizList.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
         }
 
         function showResult() {
-            const lang = document.getElementById("lang-select").value;
             document.getElementById("quiz-content").style.display = "none";
             document.getElementById("result-content").style.display = "block";
-            document.getElementById("result-msg").innerText = uiText[lang].finish;
-            document.getElementById("score-display").innerText = (score * 10) + "%";
-            
-            let commentIdx = 0;
-            if(score >= 10) commentIdx = 2;
-            else if(score >= 7) commentIdx = 1;
-            document.getElementById("result-comment").innerText = uiText[lang].comment[commentIdx];
+            const display = document.getElementById("score-display");
+            if(currentMode === 'test') {
+                display.innerText = Math.round((score / quizList.length) * 100) + "%";
+            } else {
+                display.innerText = "Finish!";
+            }
         }
 
-        function renderList() {
-            const lang = document.getElementById("lang-select").value;
-            const container = document.getElementById('verb-list-container');
+        /* リスト表示 */
+        function showListPage() {
+            showPage('list');
+            const container = document.getElementById('list-container');
             container.innerHTML = "";
-            [1, 2, 3].forEach(groupNum => {
-                const title = document.createElement('div');
-                title.className = 'group-title';
-                title.innerText = "Group " + groupNum;
-                container.appendChild(title);
-                allData.filter(d => d.g === groupNum).forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'list-item';
-                    div.onclick = () => speak(item.q);
-                    const meaning = (lang === "vi") ? item.v : item.i;
-                    div.innerHTML = `<div style="text-align:left"><div class="list-ja">${item.q} <span style="font-size:12px;color:#ccc">${item.r}</span></div><div style="color:#666">${meaning}</div></div><div style="color:#FF5252">🔊</div>`;
-                    container.appendChild(div);
-                });
+            const lang = document.getElementById("lang-select").value;
+
+            allData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                div.onclick = () => speak(item.q);
+                const meaning = (lang === "vi") ? item.v : item.i;
+                div.innerHTML = `<div class="list-ja">${item.q} <small style="color:#ccc">${item.r}</small><br><span style="font-size:14px; color:#666; font-weight:normal;">${meaning}</span></div><div>🔊</div>`;
+                container.appendChild(div);
             });
         }
-
-        // 起動時に初期化
-        window.onload = initGame;
     </script>
 </body>
 </html>
