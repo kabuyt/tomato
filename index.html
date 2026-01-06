@@ -8,9 +8,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="トマト N5">
     <link rel="apple-touch-icon" href="images/icon.png">
-    <link rel="icon" type="image/png" href="images/icon.png">
 
-    <title>トマト N5 - Tagged List</title>
+    <title>トマト N5 - Audio Fixed</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         .page { display: none; padding: 20px; min-height: 100vh; box-sizing: border-box; }
@@ -22,20 +21,20 @@
             background: white; border-bottom: 5px solid #FFCDD2; cursor: pointer; color: #FF5252; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .menu-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
         .list-btn { background: #FFAB91; color: white; border-bottom-color: #D84315; margin-top: 10px; }
         #mode-selection { background: white; border-radius: 25px; padding: 20px; border: 3px solid #FF5252; margin-top: 10px; display: none; }
         
-        /* クイズ・カード設定 */
+        /* リスト・タグ */
+        .list-section-title { text-align: left; font-size: 20px; font-weight: bold; color: #FF5252; margin: 25px auto 10px; border-left: 6px solid #FF5252; padding-left: 12px; max-width: 500px; }
+        .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 15px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
+        .list-item:active { background: #FFF3E0; }
+        .cat-tag { font-size: 10px; padding: 2px 8px; border-radius: 6px; color: white; margin-left: 8px; vertical-align: middle; font-weight: bold; }
+        .speaker-icon { font-size: 20px; }
+        
+        .btn-back { background: #666; color: white; border: none; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; }
         .card { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 500px; margin: 10px auto; border: 4px solid #FF5252; min-height: 380px; display: flex; flex-direction: column; justify-content: center; }
         .word { font-size: 45px; font-weight: bold; color: #FF5252; margin: 10px 0; }
         .opt-btn { padding: 18px; font-size: 18px; border: none; border-radius: 15px; background: #FFEBEE; border-bottom: 4px solid #FFCDD2; cursor: pointer; margin-bottom: 8px; width: 100%; }
-        .btn-back { background: #666; color: white; border: none; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; }
-        
-        /* リスト画面・色付きタグ */
-        .list-section-title { text-align: left; font-size: 20px; font-weight: bold; color: #FF5252; margin: 25px auto 10px; border-left: 6px solid #FF5252; padding-left: 12px; max-width: 500px; }
-        .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 15px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-        .cat-tag { font-size: 10px; padding: 2px 8px; border-radius: 6px; color: white; margin-left: 8px; vertical-align: middle; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -44,13 +43,13 @@
         <span class="main-logo">🍅</span>
         <h1 style="color:#FF5252;">トマト N5</h1>
         <div class="menu-grid">
-            <button class="menu-btn" onclick="selectCategory('verb')">🍎 どうし (Verb)</button>
-            <button class="menu-btn" onclick="selectCategory('noun')">📘 めいし (Noun)</button>
-            <button class="menu-btn" onclick="selectCategory('adj')">✨ けいようし (Adj)</button>
+            <button class="menu-btn" onclick="selectCategory('verb')">🍎 どうし</button>
+            <button class="menu-btn" onclick="selectCategory('noun')">📘 めいし</button>
+            <button class="menu-btn" onclick="selectCategory('adj')">✨ けいようし</button>
             <div id="mode-selection">
                 <p id="selected-label" style="font-weight:bold; color:#FF5252; margin-bottom:15px;"></p>
-                <button class="menu-btn" style="background:#FFF3E0; width:100%; margin-bottom:10px;" onclick="startGame('practice')">📖 れんしゅう (All)</button>
-                <button class="menu-btn" style="background:#FFEBEE; width:100%; margin-bottom:10px;" onclick="startGame('test')">📝 てすと (10)</button>
+                <button class="menu-btn" style="background:#FFF3E0; width:100%; margin-bottom:10px;" onclick="startGame('practice')">📖 れんしゅう</button>
+                <button class="menu-btn" style="background:#FFEBEE; width:100%; margin-bottom:10px;" onclick="startGame('test')">📝 てすと</button>
                 <button class="btn-back" onclick="cancelSelection()">もどる</button>
             </div>
             <button class="menu-btn list-btn" onclick="showListPage()">📋 リストをみる</button>
@@ -62,7 +61,7 @@
         <div class="card">
             <div id="quiz-content">
                 <div id="progress" style="font-size:14px; color:#999"></div>
-                <div id="word" class="word"></div>
+                <div id="word" class="word" onclick="speakWord(this.innerText)"></div>
                 <div id="options-container"></div>
                 <div id="message" style="margin-top:20px; font-weight:bold; font-size:24px; color:#FF5252; height:30px;"></div>
             </div>
@@ -82,15 +81,24 @@
 
     <script>
         const allData = [
-            // どうし (G1-G3)
-            {q:"あう",v:"gặp",g:1},{q:"いく",v:"đi",g:1},{q:"かえる",v:"về",g:1},{q:"のむ",v:"uống",g:1},{q:"かう",v:"mua",g:1},{q:"きく",v:"nghe",g:1},{q:"かく",v:"viết",g:1},{q:"よむ",v:"đọc",g:1},{q:"いう",v:"nói",g:1},{q:"まつ",v:"đợi",g:1},{q:"よぶ",v:"gọi",g:1},{q:"あそぶ",v:"chơi",g:1},{q:"いそぐ",v:"vội",g:1},{q:"およぐ",v:"bơi",g:1},{q:"はなす",v:"nói",g:1},{q:"たつ",v:"đứng",g:1},{q:"すわる",v:"ngồi",g:1},{q:"はいる",v:"vào",g:1},{q:"うる",v:"bán",g:1},{q:"つくる",v:"làm",g:1},{q:"おわる",v:"xong",g:1},{q:"あるく",v:"đi bộ",g:1},{q:"おく",v:"đặt",g:1},{q:"だす",v:"lấy ra",g:1},{q:"しる",v:"biết",g:1},{q:"わかる",v:"hiểu",g:1},{q:"わらう",v:"cười",g:1},{q:"あらう",v:"rửa",g:1},{q:"おきる",v:"dậy",g:2},{q:"ねる",v:"ngủ",g:2},{q:"たべる",v:"ăn",g:2},{q:"みる",v:"xem",g:2},{q:"あける",v:"mở",g:2},{q:"しめる",v:"đóng",g:2},{q:"くる",v:"đến",g:3},{q:"する",v:"làm",g:3},{q:"べんきょうする",v:"học",g:3},{q:"かいものする",v:"mua sắm",g:3},{q:"さんぽする",v:"đi dạo",g:3},
+            // どうし
+            {q:"あう",v:"gặp",g:1},{q:"いく",v:"đi",g:1},{q:"かえる",v:"về",g:1},{q:"のむ",v:"uống",g:1},{q:"かう",v:"mua",g:1},{q:"きく",v:"nghe",g:1},{q:"かく",v:"viết",g:1},{q:"よむ",v:"đọc",g:1},{q:"いう",v:"nói",g:1},{q:"まつ",v:"đợi",g:1},{q:"よぶ",v:"gọi",g:1},{q:"あそぶ",v:"chơi",g:1},{q:"いそぐ",v:"vội",g:1},{q:"およぐ",v:"bơi",g:1},{q:"はなす",v:"nói",g:1},{q:"たつ",v:"đứng",g:1},{q:"すわる",v:"ngồi",g:1},{q:"はいる",v:"vào",g:1},{q:"うる",v:"bán",g:1},{q:"つくる",v:"làm",g:1},{q:"おわる",v:"xong",g:1},{q:"あるく",v:"đi bộ",g:1},{q:"おく",v:"đặt",g:1},{q:"だす",v:"lấy ra",g:1},{q:"おきる",v:"dậy",g:2},{q:"ねる",v:"ngủ",g:2},{q:"たべる",v:"ăn",g:2},{q:"みる",v:"xem",g:2},{q:"あける",v:"mở",g:2},{q:"しめる",v:"đóng",g:2},{q:"くる",v:"đến",g:3},{q:"する",v:"làm",g:3},
             // めいし
-            {q:"がっこう",v:"trường",g:0},{q:"せんせい",v:"giáo viên",g:0},{q:"ともだち",v:"bạn",g:0},{q:"みず",v:"nước",g:0},{q:"ごはん",v:"cơm",g:0},{q:"ほん",v:"sách",g:0},{q:"くるま",v:"xe",g:0},{q:"かばん",v:"túi",g:0},{q:"とけい",v:"đồng hồ",g:0},{q:"つくえ",v:"bàn",g:0},{q:"いす",v:"ghế",g:0},{q:"おかね",v:"tiền",g:0},{q:"あした",v:"mai",g:0},{q:"きょう",v:"nay",g:0},{q:"きのう",v:"qua",g:0},{q:"かぞく",v:"gia đình",g:0},{q:"なまえ",v:"tên",g:0},{q:"けいたいでんわ",v:"điện thoại",g:0},{q:"へや",v:"phòng",g:0},{q:"にく",v:"thịt",g:0},{q:"さかな",v:"cá",g:0},{q:"やさい",v:"rau",g:0},{q:"たまご",v:"trứng",g:0},{q:"くだもの",v:"trái cây",g:0},
+            {q:"がっこう",v:"trường",g:0},{q:"せんせい",v:"giáo viên",g:0},{q:"ともだち",v:"bạn",g:0},{q:"みず",v:"nước",g:0},{q:"ごはん",v:"cơm",g:0},{q:"ほん",v:"sách",g:0},{q:"くるま",v:"xe",g:0},{q:"かばん",v:"túi",g:0},{q:"とけい",v:"đồng hồ",g:0},{q:"つくえ",v:"bàn",g:0},{q:"いす",v:"ghế",g:0},{q:"おかね",v:"tiền",g:0},{q:"あした",v:"mai",g:0},{q:"きょう",v:"nay",g:0},{q:"きのう",v:"qua",g:0},{q:"かぞく",v:"gia đình",g:0},
             // けいようし
-            {q:"たかい",v:"cao/đắt",g:4},{q:"やすい",v:"rẻ",g:4},{q:"おいしい",v:"ngon",g:4},{q:"あつい",v:"nóng",g:4},{q:"さむい",v:"lạnh",g:4},{q:"いい",v:"tốt",g:4},{q:"わるい",v:"xấu",g:4},{q:"おおきい",v:"lớn",g:4},{q:"ちいさい",v:"nhỏ",g:4},{q:"あたらしい",v:"mới",g:4},{q:"ふるい",v:"cũ",g:4}
+            {q:"たかい",v:"cao/đắt",g:4},{q:"やすい",v:"rẻ",g:4},{q:"おいしい",v:"ngon",g:4},{q:"あつい",v:"nóng",g:4},{q:"さむい",v:"lạnh",g:4},{q:"いい",v:"tốt",g:4},{q:"わるい",v:"xấu",g:4},{q:"おおきい",v:"lớn",g:4}
         ];
 
         let currentCategory = '', currentMode = '', quizList = [], current = 0, score = 0;
+
+        // ★ 音声再生の関数（iPhone向けに安定化）
+        function speakWord(text) {
+            window.speechSynthesis.cancel(); // 前の音声を止める
+            const uttr = new SpeechSynthesisUtterance(text);
+            uttr.lang = "ja-JP";
+            uttr.rate = 0.9; // 少しゆっくり
+            window.speechSynthesis.speak(uttr);
+        }
 
         function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id + '-page').classList.add('active'); }
         function selectCategory(cat) { currentCategory = cat; document.getElementById('mode-selection').style.display = 'block'; document.querySelectorAll('.menu-btn:not(#mode-selection button)').forEach(b => b.style.display = 'none'); }
@@ -113,6 +121,7 @@
             let item = quizList[current];
             document.getElementById("progress").innerText = (current + 1) + " / " + quizList.length;
             document.getElementById("word").innerText = item.q;
+            speakWord(item.q); // クイズ開始時に自動読み上げ
             document.getElementById("message").innerText = "";
             let correct = item.v;
             let others = allData.map(d => d.v).filter(v => v !== correct);
@@ -123,7 +132,7 @@
                 let btn = document.createElement("button"); btn.className = "opt-btn"; btn.innerText = c;
                 btn.onclick = () => {
                     if(c === correct) { document.getElementById("message").innerText = "⭕ OK!"; score++; setTimeout(nextQuestion, 800); }
-                    else { document.getElementById("message").innerText = "❌ " + correct; setTimeout(nextQuestion, 1500); }
+                    else { document.getElementById("message").innerText = "❌ " + correct; speakWord(item.q); setTimeout(nextQuestion, 1500); }
                 };
                 container.appendChild(btn);
             });
@@ -136,13 +145,11 @@
             showPage('list');
             const container = document.getElementById('list-container');
             container.innerHTML = "";
-            
             const cats = [
                 { title: "🍎 どうし", filter: d => d.g >= 1 && d.g <= 3, color: "#EF5350", label: "どうし" },
                 { title: "📘 めいし", filter: d => d.g === 0, color: "#42A5F5", label: "めいし" },
                 { title: "✨ けいようし", filter: d => d.g === 4, color: "#66BB6A", label: "けいようし" }
             ];
-
             cats.forEach(c => {
                 const filtered = allData.filter(c.filter).sort((a,b) => a.q.localeCompare(b.q, 'ja'));
                 if (filtered.length > 0) {
@@ -150,18 +157,12 @@
                     h3.className = 'list-section-title';
                     h3.innerText = c.title;
                     container.appendChild(h3);
-
                     filtered.forEach(item => {
                         const div = document.createElement('div');
                         div.className = 'list-item';
-                        div.innerHTML = `
-                            <div style="text-align:left;">
-                                <b style="font-size:18px;">${item.q}</b>
-                                <span class="cat-tag" style="background:${c.color}">${c.label}</span>
-                                <br><span style="color:#666;">${item.v}</span>
-                            </div>
-                            <div>🔊</div>`;
-                        div.onclick = () => { let u = new SpeechSynthesisUtterance(item.q); u.lang = "ja-JP"; window.speechSynthesis.speak(u); };
+                        div.innerHTML = `<div style="text-align:left;"><b style="font-size:18px;">${item.q}</b><span class="cat-tag" style="background:${c.color}">${c.label}</span><br><span style="color:#666;">${item.v}</span></div><div class="speaker-icon">🔊</div>`;
+                        // タップした時に確実に音を鳴らす
+                        div.onclick = () => { speakWord(item.q); };
                         container.appendChild(div);
                     });
                 }
