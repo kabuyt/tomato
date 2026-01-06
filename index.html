@@ -10,14 +10,13 @@
     <link rel="apple-touch-icon" href="images/icon.png">
     <link rel="icon" type="image/png" href="images/icon.png">
 
-    <title>トマト N5 - Home Icon Ready</title>
+    <title>トマト N5 Pro</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         .page { display: none; padding: 20px; min-height: 100vh; box-sizing: border-box; animation: fadeIn 0.3s; }
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* メニュー */
         .logo-container { margin-top: 30px; }
         .logo-img { width: 100px; height: 100px; object-fit: contain; border-radius: 20%; }
         .menu-grid { display: grid; gap: 12px; max-width: 400px; margin: 20px auto; padding: 10px; }
@@ -29,10 +28,8 @@
         .menu-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
         .list-btn { background: #FFAB91; color: white; border-bottom-color: #D84315; margin-top: 10px; }
 
-        /* モード選択 */
         #mode-selection { background: white; border-radius: 25px; padding: 20px; border: 3px solid #FF5252; margin-top: 10px; display: none; }
 
-        /* クイズカード */
         .card { 
             background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
             max-width: 500px; margin: 10px auto; border: 4px solid #FF5252; min-height: 380px; 
@@ -47,7 +44,6 @@
         select { border-radius: 5px; border: none; padding: 3px; background: white; margin: 0 5px; }
         .btn-back { background: #666; color: white; border: none; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; }
 
-        /* リスト */
         .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 12px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
         .list-ja { font-size: 20px; font-weight: bold; color: #FF5252; text-align: left; }
     </style>
@@ -69,7 +65,7 @@
             <div id="mode-selection">
                 <p id="selected-label" style="font-weight:bold; color:#FF5252; margin-bottom:15px;"></p>
                 <div style="display:grid; gap:10px;">
-                    <button class="menu-btn" style="background:#FFF3E0;" onclick="startGame('practice')">📖 Luyện tập</button>
+                    <button class="menu-btn" style="background:#FFF3E0;" onclick="startGame('practice')">📖 Luyện tập (All)</button>
                     <button class="menu-btn" style="background:#FFEBEE;" onclick="startGame('test')">📝 Kiểm tra (10)</button>
                     <button class="btn-back" onclick="cancelSelection()">Quay lại</button>
                 </div>
@@ -116,21 +112,32 @@
             { q: "あう", r: "au", v: "gặp", i: "bertemu", g: 1 },
             { q: "いく", r: "iku", v: "đi", i: "pergi", g: 1 },
             { q: "いう", r: "iu", v: "nói", i: "berbicara", g: 1 },
-            { q: "うたう", r: "utau", v: "hát", i: "bernyanyi", g: 1 },
+            { q: "かく", r: "kaku", v: "viết", i: "menulis", g: 1 },
+            { q: "きく", r: "kiku", v: "nghe", i: "mendengar", g: 1 },
+            { q: "のむ", r: "nomu", v: "uống", i: "minum", g: 1 },
+            { q: "よむ", r: "yomu", v: "đọc", i: "membaca", g: 1 },
+            { q: "かう", r: "kau", v: "mua", i: "membeli", g: 1 },
             { q: "おきる", r: "okiru", v: "thức dậy", i: "bangun", g: 2 },
             { q: "たべる", r: "taberu", v: "ăn", i: "makan", g: 2 },
+            { q: "ねる", r: "neru", v: "ngủ", i: "tidur", g: 2 },
             { q: "みる", r: "miru", v: "xem/nhìn", i: "melihat", g: 2 },
             { q: "くる", r: "kuru", v: "đến", i: "datang", g: 3 },
             { q: "する", r: "suru", v: "làm", i: "melakukan", g: 3 },
+            { q: "べんきょうする", r: "benkyou-suru", v: "học tập", i: "belajar", g: 3 },
+
             // 名詞 (g:0)
             { q: "がっこう", r: "gakkou", v: "trường học", i: "sekolah", g: 0 },
             { q: "せんせい", r: "sensei", v: "giáo viên", i: "guru", g: 0 },
             { q: "ともだち", r: "tomodachi", v: "bạn bè", i: "teman", g: 0 },
             { q: "みず", r: "mizu", v: "nước", i: "air", g: 0 },
-            { q: "おかね", r: "okane", v: "tiền", i: "uang", g: 0 },
             { q: "ごはん", r: "gohan", v: "cơm/bữa ăn", i: "nasi", g: 0 },
             { q: "ほん", r: "hon", v: "sách", i: "buku", g: 0 },
-            // 形容詞 (g:4)
+            { q: "くるま", r: "kuruma", v: "xe hơi", i: "mobil", g: 0 },
+            { q: "とけい", r: "tokei", v: "đồng hồ", i: "jam", g: 0 },
+            { q: "でんわ", r: "denwa", v: "điện thoại", i: "telepon", g: 0 },
+            { q: "かばん", r: "kaban", v: "cặp/túi", i: "tas", g: 0 },
+
+            // 形容詞 (g:4) - 30語追加
             { q: "たかい", r: "takai", v: "cao/đắt", i: "tinggi/mahal", g: 4 },
             { q: "やすい", r: "yasui", v: "rẻ", i: "murah", g: 4 },
             { q: "おいしい", r: "oishii", v: "ngon", i: "enak", g: 4 },
@@ -140,7 +147,27 @@
             { q: "わるい", r: "warui", v: "xấu/tồi", i: "buruk", g: 4 },
             { q: "おおきい", r: "ookii", v: "to/lớn", i: "besar", g: 4 },
             { q: "ちいさい", r: "chiisai", v: "nhỏ", i: "kecil", g: 4 },
-            { q: "あたらしい", r: "atarashii", v: "mới", i: "baru", g: 4 }
+            { q: "あたらしい", r: "atarashii", v: "mới", i: "baru", g: 4 },
+            { q: "ふるい", r: "furui", v: "cũ", i: "lama", g: 4 },
+            { q: "むずかしい", r: "muzukashii", v: "khó", i: "sulit", g: 4 },
+            { q: "やさしい", r: "yasashii", v: "dễ/hiền", i: "mudah", g: 4 },
+            { q: "とおい", r: "tooi", v: "xa", i: "jauh", g: 4 },
+            { q: "ちかい", r: "chikai", v: "gần", i: "dekat", g: 4 },
+            { q: "おもしろい", r: "omoshiroi", v: "thú vị", i: "menarik", g: 4 },
+            { q: "いそがしい", r: "isogashii", v: "bận rộn", i: "sibuk", g: 4 },
+            { q: "たのしい", r: "tanoshii", v: "vui vẻ", i: "senang", g: 4 },
+            { q: "しろい", r: "shiroi", v: "trắng", i: "putih", g: 4 },
+            { q: "くろい", r: "kuroi", v: "đen", i: "hitam", g: 4 },
+            { q: "あかい", r: "akai", v: "đỏ", i: "merah", g: 4 },
+            { q: "あおい", r: "aoi", v: "xanh", i: "biru", g: 4 },
+            { q: "ながい", r: "nagai", v: "dài", i: "panjang", g: 4 },
+            { q: "みじかい", r: "mijikai", v: "ngắn", i: "pendek", g: 4 },
+            { q: "ひろい", r: "hiroi", v: "rộng", i: "luas", g: 4 },
+            { q: "せまい", r: "semai", v: "hẹp", i: "sempit", g: 4 },
+            { q: "くらい", r: "kurai", v: "tối", i: "gelap", g: 4 },
+            { q: "あかるい", r: "akarui", v: "sáng", i: "terang", g: 4 },
+            { q: "おもい", r: "omoi", v: "nặng", i: "berat", g: 4 },
+            { q: "かるい", r: "karui", v: "nhẹ", i: "ringan", g: 4 }
         ];
 
         let currentCategory = '';
@@ -201,6 +228,7 @@
             else data = allData.filter(d => d.g === 4);
             
             quizList = [...data].sort(() => Math.random() - 0.5);
+            // テストモードの時だけ10問に絞る
             if(currentMode === 'test') quizList = quizList.slice(0, 10);
             
             current = 0;
@@ -221,6 +249,7 @@
 
             if(!isTeacher) {
                 const correct = (lang === "vi") ? item.v : item.i;
+                // 選択肢は全データからランダムに作成
                 const allOpts = allData.map(d => (lang === "vi") ? d.v : d.i);
                 let choices = [correct];
                 while(choices.length < 4) {
@@ -276,7 +305,7 @@
             document.getElementById("quiz-content").style.display = "none";
             document.getElementById("result-content").style.display = "block";
             const scoreArea = document.getElementById("score-display");
-            scoreArea.innerText = currentMode === 'test' ? Math.round((score/quizList.length)*100) + "%" : "Great Job!";
+            scoreArea.innerText = currentMode === 'test' ? Math.round((score/quizList.length)*100) + "%" : "Finish!";
         }
 
         function showListPage() {
