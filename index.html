@@ -10,14 +10,12 @@
     <link rel="apple-touch-icon" href="images/icon.png">
     <link rel="icon" type="image/png" href="images/icon.png">
 
-    <title>トマト N5 - 完全版</title>
+    <title>トマト N5 - Sorted List</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         .page { display: none; padding: 20px; min-height: 100vh; box-sizing: border-box; }
         .active { display: block; }
-        
         .main-logo { font-size: 80px; margin-top: 30px; display: block; }
-        
         .menu-grid { display: grid; gap: 12px; max-width: 400px; margin: 20px auto; padding: 10px; }
         .menu-btn { 
             padding: 20px; font-size: 19px; font-weight: bold; border: none; border-radius: 20px; 
@@ -26,14 +24,15 @@
         }
         .menu-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
         .list-btn { background: #FFAB91; color: white; border-bottom-color: #D84315; margin-top: 10px; }
-        
         #mode-selection { background: white; border-radius: 25px; padding: 20px; border: 3px solid #FF5252; margin-top: 10px; display: none; }
         .card { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 500px; margin: 10px auto; border: 4px solid #FF5252; min-height: 380px; display: flex; flex-direction: column; justify-content: center; }
         .word { font-size: 45px; font-weight: bold; color: #FF5252; margin: 10px 0; }
         .opt-btn { padding: 18px; font-size: 18px; border: none; border-radius: 15px; background: #FFEBEE; border-bottom: 4px solid #FFCDD2; cursor: pointer; margin-bottom: 8px; width: 100%; }
-        
         .btn-back { background: #666; color: white; border: none; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; }
-        .list-item { background: white; margin: 8px auto; padding: 15px; border-radius: 15px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        
+        /* リスト表示用 */
+        .list-section-title { text-align: left; font-size: 20px; font-weight: bold; color: #FF5252; margin: 20px 0 10px 5px; border-left: 5px solid #FF5252; padding-left: 10px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .list-item { background: white; margin: 6px auto; padding: 12px; border-radius: 15px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
         .cat-tag { font-size: 10px; padding: 2px 6px; border-radius: 5px; color: white; margin-left: 8px; vertical-align: middle; }
     </style>
 </head>
@@ -41,20 +40,17 @@
 
     <div id="menu-page" class="page active">
         <span class="main-logo">🍅</span>
-        <h1 style="color:#FF5252; margin-top:10px;">トマト N5</h1>
-        
+        <h1 style="color:#FF5252;">トマト N5</h1>
         <div class="menu-grid">
             <button class="menu-btn" onclick="selectCategory('verb')">🍎 どうし (Verb)</button>
             <button class="menu-btn" onclick="selectCategory('noun')">📘 めいし (Noun)</button>
             <button class="menu-btn" onclick="selectCategory('adj')">✨ けいようし (Adj)</button>
-            
             <div id="mode-selection">
                 <p id="selected-label" style="font-weight:bold; color:#FF5252; margin-bottom:15px;"></p>
                 <button class="menu-btn" style="background:#FFF3E0; width:100%; margin-bottom:10px;" onclick="startGame('practice')">📖 れんしゅう (All)</button>
                 <button class="menu-btn" style="background:#FFEBEE; width:100%; margin-bottom:10px;" onclick="startGame('test')">📝 てすと (10)</button>
                 <button class="btn-back" onclick="cancelSelection()">もどる</button>
             </div>
-            
             <button class="menu-btn list-btn" onclick="showListPage()">📋 リストをみる (Full List)</button>
         </div>
     </div>
@@ -83,7 +79,6 @@
     </div>
 
     <script>
-        // 単語リストを130個以上に大幅増量
         const allData = [
             // どうし (G1-G3)
             {q:"あう",v:"gặp",i:"bertemu",g:1},{q:"いく",v:"đi",i:"pergi",g:1},{q:"かえる",v:"về",i:"pulang",g:1},{q:"のむ",v:"uống",i:"minum",g:1},
@@ -92,21 +87,24 @@
             {q:"いそぐ",v:"vội",i:"terburu-buru",g:1},{q:"およぐ",v:"bơi",i:"berenang",g:1},{q:"はなす",v:"nói chuyện",i:"berbicara",g:1},{q:"たつ",v:"đứng",i:"berdiri",g:1},
             {q:"すわる",v:"ngồi",i:"duduk",g:1},{q:"はいる",v:"vào",i:"masuk",g:1},{q:"うる",v:"bán",i:"menjual",g:1},{q:"つくる",v:"làm",i:"membuat",g:1},
             {q:"おわる",v:"xong",i:"selesai",g:1},{q:"あるく",v:"đi bộ",i:"berjalan",g:1},{q:"おく",v:"đặt",i:"menaruh",g:1},{q:"だす",v:"lấy ra",i:"mengeluarkan",g:1},
+            {q:"しる",v:"biết",i:"tahu",g:1},{q:"わかる",v:"hiểu",i:"mengerti",g:1},{q:"わらう",v:"cười",i:"tertawa",g:1},{q:"あらう",v:"rửa",i:"mencuci",g:1},
             {q:"おきる",v:"dậy",i:"bangun",g:2},{q:"ねる",v:"ngủ",i:"tidur",g:2},{q:"たべる",v:"ăn",i:"makan",g:2},{q:"みる",v:"xem",i:"melihat",g:2},
-            {q:"あける",v:"mở",i:"membuka",g:2},{q:"しめる",v:"đóng",i:"menutup",g:2},{q:"くる",v:"đến",i:"datang",g:3},{q:"する",v:"làm",i:"melakukan",g:3},
-            {q:"べんきょうする",v:"học",i:"belajar",g:3},{q:"かいものする",v:"mua sắm",i:"belanja",g:3},{q:"さんぽする",v:"đi dạo",i:"jalan-jalan",g:3},
-            // めいし (50個以上)
+            {q:"あける",v:"mở",i:"membuka",g:2},{q:"しめる",v:"đóng",i:"menutup",g:2},{q:"おしえる",v:"dạy",i:"mengajar",g:2},{q:"かりる",v:"mượn",i:"meminjam",g:2},
+            {q:"くる",v:"đến",i:"datang",g:3},{q:"する",v:"làm",i:"melakukan",g:3},{q:"べんきょうする",v:"học",i:"belajar",g:3},{q:"かいものする",v:"mua sắm",i:"belanja",g:3},
+            
+            // めいし
             {q:"がっこう",v:"trường",i:"sekolah",g:0},{q:"せんせい",v:"giáo viên",i:"guru",g:0},{q:"ともだち",v:"bạn",i:"teman",g:0},{q:"みず",v:"nước",i:"air",g:0},
             {q:"ごはん",v:"cơm",i:"nasi",g:0},{q:"ほん",v:"sách",i:"buku",g:0},{q:"くるま",v:"xe",i:"mobil",g:0},{q:"かばん",v:"túi",i:"tas",g:0},
             {q:"とけい",v:"đồng hồ",i:"jam",g:0},{q:"つくえ",v:"bàn",i:"meja",g:0},{q:"いす",v:"ghế",i:"kursi",g:0},{q:"おかね",v:"tiền",i:"uang",g:0},
-            {q:"あした",v:"mai",i:"besok",g:0},{q:"きょう",v:"nay",i:"hari ini",g:0},{q:"きのう",v:"qua",i:"kemarin",g:0},{q:"かぞく",v:"gia đình",i:"keluarga",g:0},
-            {q:"なまえ",v:"tên",i:"nama",g:0},{q:"けいたいでんわ",v:"điện thoại",i:"HP",g:0},{q:"へや",v:"phòng",i:"kamar",g:0},{q:"にく",v:"thịt",i:"daging",g:0},
-            {q:"さかな",v:"cá",i:"ikan",g:0},{q:"やさい",v:"rau",i:"sayur",g:0},{q:"たまご",v:"trứng",i:"telur",g:0},{q:"くだもの",v:"trái cây",i:"buah",g:0},
-            {q:"ぎゅうにゅう",v:"sữa",i:"susu",g:0},{q:"おちゃ",v:"trà",i:"teh",g:0},{q:"びーる",v:"bia",i:"bir",g:0},{q:"てんき",v:"thời tiết",i:"cuaca",g:0},
+            {q:"なまえ",v:"tên",i:"nama",g:0},{q:"へや",v:"phòng",i:"kamar",g:0},{q:"てれび",v:"tivi",i:"TV",g:0},{q:"きょう",v:"nay",i:"hari ini",g:0},
+            {q:"あした",v:"mai",i:"besok",g:0},{q:"きのう",v:"qua",i:"kemarin",g:0},{q:"あさ",v:"sáng",i:"pagi",g:0},{q:"よる",v:"tối",i:"malam",g:0},
+            {q:"かぞく",v:"gia đình",i:"keluarga",g:0},{q:"にく",v:"thịt",i:"daging",g:0},{q:"さかな",v:"cá",i:"ikan",g:0},{q:"やさい",v:"rau",i:"sayur",g:0},
+            {q:"くだもの",v:"trái cây",i:"buah",g:0},{q:"たまご",v:"trứng",i:"telur",g:0},{q:"がくせい",v:"học sinh",i:"siswa",g:0},{q:"びょういん",v:"bệnh viện",i:"RS",g:0},
+            
             // けいようし
-            {q:"たかい",v:"cao/đắt",i:"mahal",g:4},{q:"やすい",v:"rẻ",i:"murah",g:4},{q:"おいしい",v:"ngon",i:"enak",g:4},{q:"あつい",v:"nóng",i:"panas",g:4},
+            {q:"たかい",v:"cao/đắt",i:"tinggi/mahal",g:4},{q:"やすい",v:"rẻ",i:"murah",g:4},{q:"おいしい",v:"ngon",i:"enak",g:4},{q:"あつい",v:"nóng",i:"panas",g:4},
             {q:"さむい",v:"lạnh",i:"dingin",g:4},{q:"いい",v:"tốt",i:"baik",g:4},{q:"わるい",v:"xấu",i:"buruk",g:4},{q:"おおきい",v:"lớn",i:"besar",g:4},
-            {q:"ちいさい",v:"nhỏ",i:"kecil",g:4},{q:"あたらしい",v:"mới",i:"baru",g:4},{q:"ふるい",v:"cũ",i:"lama",g:4}
+            {q:"ちいさい",v:"nhỏ",i:"kecil",g:4},{q:"あたらしい",v:"mới",i:"baru",g:4},{q:"ふるい",v:"cũ",i:"lama",g:4},{q:"いそがしい",v:"bận",i:"sibuk",g:4}
         ];
 
         let currentCategory = '', currentMode = '', quizList = [], current = 0, score = 0;
@@ -156,14 +154,29 @@
             const container = document.getElementById('list-container');
             container.innerHTML = "";
             document.getElementById('list-count').innerText = allData.length;
-            allData.sort((a,b) => a.q.localeCompare(b.q, 'ja')).forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'list-item';
-                let tagColor = item.g === 0 ? '#42A5F5' : item.g === 4 ? '#66BB6A' : '#EF5350';
-                let tagName = item.g === 0 ? 'めいし' : item.g === 4 ? 'けいようし' : 'どうし';
-                div.innerHTML = `<div style="text-align:left;"><b style="font-size:18px;">${item.q}</b><span class="cat-tag" style="background:${tagColor}">${tagName}</span><br><span style="color:#666;">${item.v}</span></div><div>🔊</div>`;
-                div.onclick = () => { let uttr = new SpeechSynthesisUtterance(item.q); uttr.lang = "ja-JP"; window.speechSynthesis.speak(uttr); };
-                container.appendChild(div);
+
+            const categories = [
+                { title: "🍎 どうし (Verb)", filter: d => d.g >= 1 && d.g <= 3, color: "#EF5350" },
+                { title: "📘 めいし (Noun)", filter: d => d.g === 0, color: "#42A5F5" },
+                { title: "✨ けいようし (Adj)", filter: d => d.g === 4, color: "#66BB6A" }
+            ];
+
+            categories.forEach(cat => {
+                const sectionData = allData.filter(cat.filter).sort((a,b) => a.q.localeCompare(b.q, 'ja'));
+                if (sectionData.length > 0) {
+                    const h3 = document.createElement('div');
+                    h3.className = 'list-section-title';
+                    h3.innerText = cat.title;
+                    container.appendChild(h3);
+
+                    sectionData.forEach(item => {
+                        const div = document.createElement('div');
+                        div.className = 'list-item';
+                        div.innerHTML = `<div style="text-align:left;"><b style="font-size:18px;">${item.q}</b><br><span style="color:#666;">${item.v}</span></div><div>🔊</div>`;
+                        div.onclick = () => { let uttr = new SpeechSynthesisUtterance(item.q); uttr.lang = "ja-JP"; window.speechSynthesis.speak(uttr); };
+                        container.appendChild(div);
+                    });
+                }
             });
         }
     </script>
