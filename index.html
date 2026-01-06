@@ -31,9 +31,8 @@
         .btn-back { background: #666; color: white; border: none; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; }
         
         /* リスト表示用 */
-        .list-section-title { text-align: left; font-size: 20px; font-weight: bold; color: #FF5252; margin: 20px 0 10px 5px; border-left: 5px solid #FF5252; padding-left: 10px; max-width: 500px; margin-left: auto; margin-right: auto; }
-        .list-item { background: white; margin: 6px auto; padding: 12px; border-radius: 15px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
-        .cat-tag { font-size: 10px; padding: 2px 6px; border-radius: 5px; color: white; margin-left: 8px; vertical-align: middle; }
+        .list-section-title { text-align: left; font-size: 20px; font-weight: bold; color: #FF5252; margin: 25px 0 10px 5px; border-left: 6px solid #FF5252; padding-left: 12px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 15px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
     </style>
 </head>
 <body>
@@ -74,37 +73,29 @@
 
     <div id="list-page" class="page">
         <button class="btn-back" onclick="goToMenu()">← もどる</button>
-        <h2 style="color:#FF5252;">ことばのリスト (<span id="list-count">0</span>)</h2>
+        <h2 style="color:#FF5252;">ことばのリスト</h2>
         <div id="list-container"></div>
     </div>
 
     <script>
         const allData = [
             // どうし (G1-G3)
-            {q:"あう",v:"gặp",i:"bertemu",g:1},{q:"いく",v:"đi",i:"pergi",g:1},{q:"かえる",v:"về",i:"pulang",g:1},{q:"のむ",v:"uống",i:"minum",g:1},
-            {q:"かう",v:"mua",i:"membeli",g:1},{q:"きく",v:"nghe",i:"mendengar",g:1},{q:"かく",v:"viết",i:"menulis",g:1},{q:"よむ",v:"đọc",i:"membaca",g:1},
-            {q:"いう",v:"nói",i:"berbicara",g:1},{q:"まつ",v:"đợi",i:"menunggu",g:1},{q:"よぶ",v:"gọi",i:"memanggil",g:1},{q:"あそぶ",v:"chơi",i:"bermain",g:1},
-            {q:"いそぐ",v:"vội",i:"terburu-buru",g:1},{q:"およぐ",v:"bơi",i:"berenang",g:1},{q:"はなす",v:"nói chuyện",i:"berbicara",g:1},{q:"たつ",v:"đứng",i:"berdiri",g:1},
-            {q:"すわる",v:"ngồi",i:"duduk",g:1},{q:"はいる",v:"vào",i:"masuk",g:1},{q:"うる",v:"bán",i:"menjual",g:1},{q:"つくる",v:"làm",i:"membuat",g:1},
-            {q:"おわる",v:"xong",i:"selesai",g:1},{q:"あるく",v:"đi bộ",i:"berjalan",g:1},{q:"おく",v:"đặt",i:"menaruh",g:1},{q:"だす",v:"lấy ra",i:"mengeluarkan",g:1},
-            {q:"しる",v:"biết",i:"tahu",g:1},{q:"わかる",v:"hiểu",i:"mengerti",g:1},{q:"わらう",v:"cười",i:"tertawa",g:1},{q:"あらう",v:"rửa",i:"mencuci",g:1},
-            {q:"おきる",v:"dậy",i:"bangun",g:2},{q:"ねる",v:"ngủ",i:"tidur",g:2},{q:"たべる",v:"ăn",i:"makan",g:2},{q:"みる",v:"xem",i:"melihat",g:2},
-            {q:"あける",v:"mở",i:"membuka",g:2},{q:"しめる",v:"đóng",i:"menutup",g:2},{q:"おしえる",v:"dạy",i:"mengajar",g:2},{q:"かりる",v:"mượn",i:"meminjam",g:2},
-            {q:"くる",v:"đến",i:"datang",g:3},{q:"する",v:"làm",i:"melakukan",g:3},{q:"べんきょうする",v:"học",i:"belajar",g:3},{q:"かいものする",v:"mua sắm",i:"belanja",g:3},
-            
+            {q:"あう",v:"gặp",g:1},{q:"いく",v:"đi",g:1},{q:"かえる",v:"về",g:1},{q:"のむ",v:"uống",g:1},
+            {q:"かう",v:"mua",g:1},{q:"きく",v:"nghe",g:1},{q:"かく",v:"viết",g:1},{q:"よむ",v:"đọc",g:1},
+            {q:"いう",v:"nói",g:1},{q:"まつ",v:"đợi",g:1},{q:"よぶ",v:"gọi",g:1},{q:"あそぶ",v:"chơi",g:1},
+            {q:"いそぐ",v:"vội",g:1},{q:"およぐ",v:"bơi",g:1},{q:"はなす",v:"nói chuyện",g:1},{q:"たつ",v:"đứng",g:1},
+            {q:"すわる",v:"ngồi",g:1},{q:"はいる",v:"vào",g:1},{q:"うる",v:"bán",g:1},{q:"つくる",v:"làm",g:1},
+            {q:"おわる",v:"xong",g:1},{q:"あるく",v:"đi bộ",g:1},{q:"おく",v:"đặt",g:1},{q:"だす",v:"lấy ra",g:1},
+            {q:"おきる",v:"dậy",g:2},{q:"ねる",v:"ngủ",g:2},{q:"たべる",v:"ăn",g:2},{q:"みる",v:"xem",g:2},
+            {q:"あける",v:"mở",g:2},{q:"しめる",v:"đóng",g:2},{q:"くる",v:"đến",g:3},{q:"する",v:"làm",g:3},
             // めいし
-            {q:"がっこう",v:"trường",i:"sekolah",g:0},{q:"せんせい",v:"giáo viên",i:"guru",g:0},{q:"ともだち",v:"bạn",i:"teman",g:0},{q:"みず",v:"nước",i:"air",g:0},
-            {q:"ごはん",v:"cơm",i:"nasi",g:0},{q:"ほん",v:"sách",i:"buku",g:0},{q:"くるま",v:"xe",i:"mobil",g:0},{q:"かばん",v:"túi",i:"tas",g:0},
-            {q:"とけい",v:"đồng hồ",i:"jam",g:0},{q:"つくえ",v:"bàn",i:"meja",g:0},{q:"いす",v:"ghế",i:"kursi",g:0},{q:"おかね",v:"tiền",i:"uang",g:0},
-            {q:"なまえ",v:"tên",i:"nama",g:0},{q:"へや",v:"phòng",i:"kamar",g:0},{q:"てれび",v:"tivi",i:"TV",g:0},{q:"きょう",v:"nay",i:"hari ini",g:0},
-            {q:"あした",v:"mai",i:"besok",g:0},{q:"きのう",v:"qua",i:"kemarin",g:0},{q:"あさ",v:"sáng",i:"pagi",g:0},{q:"よる",v:"tối",i:"malam",g:0},
-            {q:"かぞく",v:"gia đình",i:"keluarga",g:0},{q:"にく",v:"thịt",i:"daging",g:0},{q:"さかな",v:"cá",i:"ikan",g:0},{q:"やさい",v:"rau",i:"sayur",g:0},
-            {q:"くだもの",v:"trái cây",i:"buah",g:0},{q:"たまご",v:"trứng",i:"telur",g:0},{q:"がくせい",v:"học sinh",i:"siswa",g:0},{q:"びょういん",v:"bệnh viện",i:"RS",g:0},
-            
+            {q:"がっこう",v:"trường",g:0},{q:"せんせい",v:"giáo viên",g:0},{q:"ともだち",v:"bạn",g:0},{q:"みず",v:"nước",g:0},
+            {q:"ごはん",v:"cơm",g:0},{q:"ほん",v:"sách",g:0},{q:"くるま",v:"xe",g:0},{q:"かばん",v:"túi",g:0},
+            {q:"とけい",v:"đồng hồ",g:0},{q:"つくえ",v:"bàn",g:0},{q:"いす",v:"ghế",g:0},{q:"おかね",v:"tiền",g:0},
+            {q:"なまえ",v:"tên",g:0},{q:"へや",v:"phòng",g:0},{q:"あした",v:"mai",g:0},{q:"きょう",v:"nay",g:0},
             // けいようし
-            {q:"たかい",v:"cao/đắt",i:"tinggi/mahal",g:4},{q:"やすい",v:"rẻ",i:"murah",g:4},{q:"おいしい",v:"ngon",i:"enak",g:4},{q:"あつい",v:"nóng",i:"panas",g:4},
-            {q:"さむい",v:"lạnh",i:"dingin",g:4},{q:"いい",v:"tốt",i:"baik",g:4},{q:"わるい",v:"xấu",i:"buruk",g:4},{q:"おおきい",v:"lớn",i:"besar",g:4},
-            {q:"ちいさい",v:"nhỏ",i:"kecil",g:4},{q:"あたらしい",v:"mới",i:"baru",g:4},{q:"ふるい",v:"cũ",i:"lama",g:4},{q:"いそがしい",v:"bận",i:"sibuk",g:4}
+            {q:"たかい",v:"cao/đắt",g:4},{q:"やすい",v:"rẻ",g:4},{q:"おいしい",v:"ngon",g:4},{q:"あつい",v:"nóng",g:4},
+            {q:"さむい",v:"lạnh",g:4},{q:"いい",v:"tốt",g:4},{q:"わるい",v:"xấu",g:4},{q:"おおきい",v:"lớn",g:4}
         ];
 
         let currentCategory = '', currentMode = '', quizList = [], current = 0, score = 0;
@@ -153,27 +144,26 @@
             showPage('list');
             const container = document.getElementById('list-container');
             container.innerHTML = "";
-            document.getElementById('list-count').innerText = allData.length;
-
-            const categories = [
-                { title: "🍎 どうし (Verb)", filter: d => d.g >= 1 && d.g <= 3, color: "#EF5350" },
-                { title: "📘 めいし (Noun)", filter: d => d.g === 0, color: "#42A5F5" },
-                { title: "✨ けいようし (Adj)", filter: d => d.g === 4, color: "#66BB6A" }
+            
+            const cats = [
+                { title: "🍎 どうし (Verb)", filter: d => d.g >= 1 && d.g <= 3 },
+                { title: "📘 めいし (Noun)", filter: d => d.g === 0 },
+                { title: "✨ けいようし (Adj)", filter: d => d.g === 4 }
             ];
 
-            categories.forEach(cat => {
-                const sectionData = allData.filter(cat.filter).sort((a,b) => a.q.localeCompare(b.q, 'ja'));
+            cats.forEach(c => {
+                const sectionData = allData.filter(c.filter).sort((a,b) => a.q.localeCompare(b.q, 'ja'));
                 if (sectionData.length > 0) {
                     const h3 = document.createElement('div');
                     h3.className = 'list-section-title';
-                    h3.innerText = cat.title;
+                    h3.innerText = c.title;
                     container.appendChild(h3);
 
                     sectionData.forEach(item => {
                         const div = document.createElement('div');
                         div.className = 'list-item';
                         div.innerHTML = `<div style="text-align:left;"><b style="font-size:18px;">${item.q}</b><br><span style="color:#666;">${item.v}</span></div><div>🔊</div>`;
-                        div.onclick = () => { let uttr = new SpeechSynthesisUtterance(item.q); uttr.lang = "ja-JP"; window.speechSynthesis.speak(uttr); };
+                        div.onclick = () => { let u = new SpeechSynthesisUtterance(item.q); u.lang = "ja-JP"; window.speechSynthesis.speak(u); };
                         container.appendChild(div);
                     });
                 }
