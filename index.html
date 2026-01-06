@@ -3,19 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="トマト N5">
-    <link rel="apple-touch-icon" href="images/icon.png">
-    <link rel="icon" type="image/png" href="images/icon.png">
-
-    <title>トマト N5 - Bug Fixed</title>
+    <title>トマト N5 - Full Vocab</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         .page { display: none; padding: 20px; min-height: 100vh; box-sizing: border-box; }
         .active { display: block; }
-        .logo-container { margin-top: 30px; }
-        .logo-img { width: 100px; height: 100px; object-fit: contain; border-radius: 20%; }
         .menu-grid { display: grid; gap: 12px; max-width: 400px; margin: 20px auto; padding: 10px; }
         .menu-btn { 
             padding: 20px; font-size: 19px; font-weight: bold; border: none; border-radius: 20px; 
@@ -25,27 +19,18 @@
         .menu-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
         .list-btn { background: #FFAB91; color: white; border-bottom-color: #D84315; margin-top: 10px; }
         #mode-selection { background: white; border-radius: 25px; padding: 20px; border: 3px solid #FF5252; margin-top: 10px; display: none; }
-        .card { 
-            background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-            max-width: 500px; margin: 10px auto; border: 4px solid #FF5252; min-height: 380px; 
-            display: flex; flex-direction: column; justify-content: center; position: relative; 
-        }
+        .card { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 500px; margin: 10px auto; border: 4px solid #FF5252; min-height: 380px; display: flex; flex-direction: column; justify-content: center; }
         .word { font-size: 45px; font-weight: bold; color: #FF5252; margin: 10px 0; }
-        .options { display: grid; gap: 10px; margin-top: 10px; }
-        .opt-btn { padding: 18px; font-size: 18px; border: none; border-radius: 15px; background: #FFEBEE; border-bottom: 4px solid #FFCDD2; cursor: pointer; }
-        .mode-selector { background: #FF5252; padding: 10px; border-radius: 15px; display: inline-block; color: white; margin-bottom: 10px; font-size: 12px; }
-        select { border-radius: 5px; border: none; padding: 3px; background: white; margin: 0 5px; }
+        .opt-btn { padding: 18px; font-size: 18px; border: none; border-radius: 15px; background: #FFEBEE; border-bottom: 4px solid #FFCDD2; cursor: pointer; margin-bottom: 8px; width: 100%; }
         .btn-back { background: #666; color: white; border: none; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; }
-        .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 12px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; padding: 15px; }
+        .list-item { background: white; margin: 8px auto; padding: 15px; border-radius: 15px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .cat-tag { font-size: 10px; padding: 2px 6px; border-radius: 5px; color: white; margin-left: 5px; vertical-align: middle; }
     </style>
 </head>
 <body>
 
     <div id="menu-page" class="page active">
-        <div class="logo-container">
-            <img src="images/icon.png" alt="🍅" class="logo-img" onerror="this.style.display='none'; document.getElementById('emoji-logo').style.display='block';">
-            <div id="emoji-logo" style="display:none; font-size:80px;">🍅</div>
-        </div>
+        <div style="font-size:80px; margin-top:30px;">🍅</div>
         <h1 style="color:#FF5252;">トマト N5</h1>
         <div class="menu-grid">
             <button class="menu-btn" onclick="selectCategory('verb')">🍎 どうし (Verb)</button>
@@ -53,36 +38,26 @@
             <button class="menu-btn" onclick="selectCategory('adj')">✨ けいようし (Adj)</button>
             <div id="mode-selection">
                 <p id="selected-label" style="font-weight:bold; color:#FF5252;"></p>
-                <div style="display:grid; gap:10px;">
-                    <button class="menu-btn" style="background:#FFF3E0;" onclick="startGame('practice')">📖 れんしゅう (All)</button>
-                    <button class="menu-btn" style="background:#FFEBEE;" onclick="startGame('test')">📝 てすと (10)</button>
-                    <button class="btn-back" onclick="cancelSelection()">もどる</button>
-                </div>
+                <button class="menu-btn" style="background:#FFF3E0; width:100%; margin-bottom:10px;" onclick="startGame('practice')">📖 れんしゅう (All)</button>
+                <button class="menu-btn" style="background:#FFEBEE; width:100%; margin-bottom:10px;" onclick="startGame('test')">📝 てすと (10)</button>
+                <button class="btn-back" onclick="cancelSelection()">もどる</button>
             </div>
-            <button class="menu-btn list-btn" onclick="showListPage()">📋 リストをみる</button>
+            <button class="menu-btn list-btn" onclick="showListPage()">📋 リストをみる (Full List)</button>
         </div>
     </div>
 
     <div id="quiz-page" class="page">
         <button class="btn-back" onclick="goToMenu()">← Menu</button>
-        <div class="mode-selector">
-            Lang: <select id="lang-select" onchange="initGame()"><option value="vi">Việt</option><option value="id">Indo</option></select>
-            Type: <select id="teacher-switch" onchange="initGame()"><option value="student">Student</option><option value="teacher">Teacher</option></select>
-        </div>
-        <div class="card" id="main-card">
+        <div class="card">
             <div id="quiz-content">
-                <div id="progress" style="font-size:14px; color:#999">...</div>
-                <div id="word" class="word">...</div>
-                <div class="options" id="options-container"></div>
-                <div id="teacher-controls" style="display:none; gap:10px; justify-content:center; margin-top:20px;">
-                    <button class="opt-btn" onclick="toggleAnswer()" style="background:#333; color:white;">Answer</button>
-                    <button class="opt-btn" onclick="nextQuestion()" style="background:#FF5252; color:white;">Next</button>
-                </div>
-                <div id="message" style="margin-top:20px; font-weight:bold; font-size:26px; height:30px; color:#FF5252;"></div>
+                <div id="progress" style="font-size:14px; color:#999"></div>
+                <div id="word" class="word"></div>
+                <div id="options-container"></div>
+                <div id="message" style="margin-top:20px; font-weight:bold; font-size:24px; color:#FF5252; height:30px;"></div>
             </div>
             <div id="result-content" style="display:none;">
                 <h2 style="color:#FF5252;">おわり！</h2>
-                <div id="score-display" style="font-size:60px; font-weight:bold; color:#FF5252; margin:20px 0;"></div>
+                <div id="score-display" style="font-size:60px; font-weight:bold; color:#FF5252;"></div>
                 <button class="menu-btn" onclick="goToMenu()" style="width:100%">Menuにもどる</button>
             </div>
         </div>
@@ -90,219 +65,92 @@
 
     <div id="list-page" class="page">
         <button class="btn-back" onclick="goToMenu()">← もどる</button>
-        <h2 style="color:#FF5252;">ことばのリスト</h2>
+        <h2 style="color:#FF5252;">ことばのリスト (<span id="list-count">0</span>)</h2>
         <div id="list-container"></div>
     </div>
 
     <script>
         const allData = [
-            // どうし (45語) - すべてひらがな
-            { q: "あう", v: "gặp", i: "bertemu", g: 1 },
-            { q: "いく", v: "đi", i: "pergi", g: 1 },
-            { q: "かえる", v: "về", i: "pulang", g: 1 },
-            { q: "のむ", v: "uống", i: "minum", g: 1 },
-            { q: "かう", v: "mua", i: "membeli", g: 1 },
-            { q: "きく", v: "nghe", i: "mendengar", g: 1 },
-            { q: "かく", v: "viết", i: "menulis", g: 1 },
-            { q: "よむ", v: "đọc", i: "membaca", g: 1 },
-            { q: "いう", v: "nói", i: "berbicara", g: 1 },
-            { q: "まつ", v: "đợi", i: "menunggu", g: 1 },
-            { q: "よぶ", v: "gọi", i: "memanggil", g: 1 },
-            { q: "あそぶ", v: "chơi", i: "bermain", g: 1 },
-            { q: "いそぐ", v: "vội vàng", i: "terburu-buru", g: 1 },
-            { q: "およぐ", v: "bơi", i: "berenang", g: 1 },
-            { q: "はなす", v: "nói chuyện", i: "berbicara", g: 1 },
-            { q: "たつ", v: "đứng", i: "berdiri", g: 1 },
-            { q: "すわる", v: "ngồi", i: "duduk", g: 1 },
-            { q: "はいる", v: "vào", i: "masuk", g: 1 },
-            { q: "うる", v: "bán", i: "menjual", g: 1 },
-            { q: "つくる", v: "làm", i: "membuat", g: 1 },
-            { q: "しる", v: "biết", i: "tahu", g: 1 },
-            { q: "わかる", v: "hiểu", i: "mengerti", g: 1 },
-            { q: "おわる", v: "xong", i: "selesai", g: 1 },
-            { q: "おくる", v: "gửi", i: "mengirim", g: 1 },
-            { q: "うたう", v: "hát", i: "bernyanyi", g: 1 },
-            { q: "あるく", v: "đi bộ", i: "berjalan kaki", g: 1 },
-            { q: "おく", v: "đặt/để", i: "menaruh", g: 1 },
-            { q: "だす", v: "lấy ra", i: "mengeluarkan", g: 1 },
-            { q: "もつ", v: "cầm/nắm", i: "memegang", g: 1 },
-            { q: "やすむ", v: "nghỉ ngơi", i: "beristirahat", g: 1 },
-            { q: "おきる", v: "thức dậy", i: "bangun", g: 2 },
-            { q: "ねる", v: "ngủ", i: "tidur", g: 2 },
-            { q: "たべる", v: "ăn", i: "makan", g: 2 },
-            { q: "みる", v: "xem/nhìn", i: "melihat", g: 2 },
-            { q: "あける", v: "mở", i: "membuka", g: 2 },
-            { q: "しめる", v: "đóng", i: "menutup", g: 2 },
-            { q: "おしえる", v: "dạy", i: "mengajar", g: 2 },
-            { q: "わすれる", v: "quên", i: "lupa", g: 2 },
-            { q: "でる", v: "ra ngoài", i: "keluar", g: 2 },
-            { q: "かりる", v: "mượn", i: "meminjam", g: 2 },
-            { q: "くる", v: "đến", i: "datang", g: 3 },
-            { q: "する", v: "làm", i: "melakukan", g: 3 },
-            { q: "べんきょうする", v: "học", i: "belajar", g: 3 },
-            { q: "かいものする", v: "mua sắm", i: "belanja", g: 3 },
-            { q: "さんぽする", v: "đi dạo", i: "jalan-jalan", g: 3 },
-
-            // めいし
-            { q: "がっこう", v: "trường học", i: "sekolah", g: 0 },
-            { q: "せんせい", v: "giáo viên", i: "guru", g: 0 },
-            { q: "ともだち", v: "bạn bè", i: "teman", g: 0 },
-            { q: "ごはん", v: "cơm", i: "nasi", g: 0 },
-            { q: "ほん", v: "sách", i: "buku", g: 0 },
-
-            // けいようし
-            { q: "たかい", v: "cao/đắt", i: "tinggi/mahal", g: 4 },
-            { q: "やすい", v: "rẻ", i: "murah", g: 4 },
-            { q: "おいしい", v: "ngon", i: "enak", g: 4 }
+            // どうし (G1-3)
+            { q: "あう", v: "gặp", i: "bertemu", g: 1 }, { q: "いく", v: "đi", i: "pergi", g: 1 }, { q: "かえる", v: "về", i: "pulang", g: 1 }, { q: "のむ", v: "uống", i: "minum", g: 1 },
+            { q: "かう", v: "mua", i: "membeli", g: 1 }, { q: "きく", v: "nghe", i: "mendengar", g: 1 }, { q: "かく", v: "viết", i: "menulis", g: 1 }, { q: "よむ", v: "đọc", i: "membaca", g: 1 },
+            { q: "いう", v: "nói", i: "berbicara", g: 1 }, { q: "まつ", v: "đợi", i: "menunggu", g: 1 }, { q: "よぶ", v: "gọi", i: "memanggil", g: 1 }, { q: "あそぶ", v: "chơi", i: "bermain", g: 1 },
+            { q: "いそぐ", v: "vội vàng", i: "terburu-buru", g: 1 }, { q: "およぐ", v: "bơi", i: "berenang", g: 1 }, { q: "はなす", v: "nói chuyện", i: "berbicara", g: 1 }, { q: "たつ", v: "đứng", i: "berdiri", g: 1 },
+            { q: "すわる", v: "ngồi", i: "duduk", g: 1 }, { q: "はいる", v: "vào", i: "masuk", g: 1 }, { q: "うる", v: "bán", i: "menjual", g: 1 }, { q: "つくる", v: "làm", i: "membuat", g: 1 },
+            { q: "しる", v: "biết", i: "tahu", g: 1 }, { q: "わかる", v: "hiểu", i: "mengerti", g: 1 }, { q: "おわる", v: "xong", i: "selesai", g: 1 }, { q: "おくる", v: "gửi", i: "mengirim", g: 1 },
+            { q: "うたう", v: "hát", i: "bernyanyi", g: 1 }, { q: "あるく", v: "đi bộ", i: "berjalan", g: 1 }, { q: "おく", v: "đặt/để", i: "menaruh", g: 1 }, { q: "だす", v: "lấy ra", i: "mengeluarkan", g: 1 },
+            { q: "おきる", v: "thức dậy", i: "bangun", g: 2 }, { q: "ねる", v: "ngủ", i: "tidur", g: 2 }, { q: "たべる", v: "ăn", i: "makan", g: 2 }, { q: "みる", v: "xem", i: "melihat", g: 2 },
+            { q: "あける", v: "mở", i: "membuka", g: 2 }, { q: "しめる", v: "đóng", i: "menutup", g: 2 }, { q: "かりる", v: "mượn", i: "meminjam", g: 2 }, { q: "おしえる", v: "dạy", i: "mengajar", g: 2 },
+            { q: "くる", v: "đến", i: "datang", g: 3 }, { q: "する", v: "làm", i: "melakukan", g: 3 }, { q: "さんぽする", v: "đi dạo", i: "jalan-jalan", g: 3 }, { q: "べんきょうする", v: "học", i: "belajar", g: 3 },
+            
+            // めいし (G0)
+            { q: "がっこう", v: "trường học", i: "sekolah", g: 0 }, { q: "せんせい", v: "giáo viên", i: "guru", g: 0 }, { q: "ともだち", v: "bạn bè", i: "teman", g: 0 }, { q: "みず", v: "nước", i: "air", g: 0 },
+            { q: "ごはん", v: "cơm", i: "nasi", g: 0 }, { q: "ほん", v: "sách", i: "buku", g: 0 }, { q: "くるま", v: "xe hơi", i: "mobil", g: 0 }, { q: "かばん", v: "túi xách", i: "tas", g: 0 },
+            { q: "とけい", v: "đồng hồ", i: "jam", g: 0 }, { q: "つくえ", v: "bàn", i: "meja", g: 0 }, { q: "いす", v: "ghế", i: "kursi", g: 0 }, { q: "ぺん", v: "bút", i: "pena", g: 0 },
+            { q: "しんぶん", v: "báo", i: "koran", g: 0 }, { q: "かぎ", v: "chìa khóa", i: "kunci", g: 0 }, { q: "くつ", v: "giày", i: "sepatu", g: 0 }, { q: "ふく", v: "quần áo", i: "pakaian", g: 0 },
+            { q: "おかね", v: "tiền", i: "uang", g: 0 }, { q: "へや", v: "phòng", i: "kamar", g: 0 }, { q: "てれび", v: "tivi", i: "TV", g: 0 }, { q: "けいたいでんわ", v: "điện thoại", i: "HP", g: 0 },
+            { q: "かぞく", v: "gia đình", i: "keluarga", g: 0 }, { q: "なまえ", v: "tên", i: "nama", g: 0 }, { q: "きょう", v: "hôm nay", i: "hari ini", g: 0 }, { q: "あした", v: "ngày mai", i: "besok", g: 0 },
+            
+            // けいようし (G4)
+            { q: "たかい", v: "cao/đắt", i: "tinggi/mahal", g: 4 }, { q: "やすい", v: "rẻ", i: "murah", g: 4 }, { q: "おいしい", v: "ngon", i: "enak", g: 4 }, { q: "あつい", v: "nóng", i: "panas", g: 4 },
+            { q: "さむい", v: "lạnh", i: "dingin", g: 4 }, { q: "いい", v: "tốt", i: "baik", g: 4 }, { q: "わるい", v: "xấu", i: "buruk", g: 4 }, { q: "おおきい", v: "lớn", i: "besar", g: 4 },
+            { q: "ちいさい", v: "nhỏ", i: "kecil", g: 4 }, { q: "あたらしい", v: "mới", i: "baru", g: 4 }, { q: "ふるい", v: "cũ", i: "lama", g: 4 }, { q: "むずかしい", v: "khó", i: "sulit", g: 4 },
+            { q: "やさしい", v: "dễ/hiền", i: "mudah", g: 4 }, { q: "たのしい", v: "vui", i: "senang", g: 4 }, { q: "いそがしい", v: "bận", i: "sibuk", g: 4 }
         ];
 
-        let currentCategory = '';
-        let currentMode = '';
-        let quizList = [];
-        let current = 0;
-        let score = 0;
-        let isAnswerShowing = false;
+        let currentCategory = '', currentMode = '', quizList = [], current = 0, score = 0;
 
-        function speak(text) {
-            const uttr = new SpeechSynthesisUtterance();
-            uttr.text = text;
-            uttr.lang = "ja-JP";
-            window.speechSynthesis.speak(uttr);
-        }
-
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id + '-page').classList.add('active');
-        }
-
-        function selectCategory(cat) {
-            currentCategory = cat;
-            document.getElementById('mode-selection').style.display = 'block';
-            const labels = {verb: "🍎 どうし", noun: "📘 めいし", adj: "✨ けいようし"};
-            document.getElementById('selected-label').innerText = labels[cat];
-            document.querySelectorAll('.menu-grid > .menu-btn').forEach(b => b.style.display = 'none');
-        }
-
-        function cancelSelection() {
-            document.getElementById('mode-selection').style.display = 'none';
-            document.querySelectorAll('.menu-grid > .menu-btn').forEach(b => b.style.display = 'flex');
-        }
+        function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id + '-page').classList.add('active'); }
+        function selectCategory(cat) { currentCategory = cat; document.getElementById('mode-selection').style.display = 'block'; document.querySelectorAll('.menu-btn:not(#mode-selection button)').forEach(b => b.style.display = 'none'); }
+        function cancelSelection() { document.getElementById('mode-selection').style.display = 'none'; document.querySelectorAll('.menu-btn').forEach(b => b.style.display = 'flex'); }
+        function goToMenu() { cancelSelection(); showPage('menu'); }
 
         function startGame(mode) {
             currentMode = mode;
+            let data = (currentCategory === 'verb') ? allData.filter(d => d.g >= 1 && d.g <= 3) : (currentCategory === 'noun') ? allData.filter(d => d.g === 0) : allData.filter(d => d.g === 4);
+            quizList = [...data].sort(() => Math.random() - 0.5);
+            if(mode === 'test') quizList = quizList.slice(0, 10);
+            current = 0; score = 0;
             showPage('quiz');
-            initGame();
-        }
-
-        function goToMenu() {
-            cancelSelection();
-            showPage('menu');
-        }
-
-        function initGame() {
-            const isTeacher = document.getElementById("teacher-switch").value === "teacher";
-            document.getElementById("main-card").className = isTeacher ? "card teacher-mode" : "card";
-            document.getElementById("teacher-controls").style.display = isTeacher ? "flex" : "none";
-            document.getElementById("options-container").style.display = isTeacher ? "none" : "grid";
             document.getElementById("quiz-content").style.display = "block";
             document.getElementById("result-content").style.display = "none";
-
-            let data;
-            if(currentCategory === 'verb') data = allData.filter(d => d.g >= 1 && d.g <= 3);
-            else if(currentCategory === 'noun') data = allData.filter(d => d.g === 0);
-            else data = allData.filter(d => d.g === 4);
-            
-            quizList = [...data].sort(() => Math.random() - 0.5);
-            if(currentMode === 'test') quizList = quizList.slice(0, 10);
-            
-            current = 0;
-            score = 0;
             showQuestion();
         }
 
         function showQuestion() {
-            const isTeacher = document.getElementById("teacher-switch").value === "teacher";
-            const lang = document.getElementById("lang-select").value;
-            const item = quizList[current];
-            isAnswerShowing = false;
-
+            let item = quizList[current];
             document.getElementById("progress").innerText = (current + 1) + " / " + quizList.length;
             document.getElementById("word").innerText = item.q;
             document.getElementById("message").innerText = "";
-
-            if(!isTeacher) {
-                const correct = (lang === "vi") ? item.v : item.i;
-                
-                // 修正：ハズレの選択肢を確実に4つ作る（現在のカテゴリーだけでなく全データから選ぶことで、選択肢が足りなくなるバグを防ぐ）
-                const others = allData
-                    .map(d => (lang === "vi") ? d.v : d.i)
-                    .filter(v => v !== correct);
-                
-                // 重複を除去
-                const uniqueOthers = [...new Set(others)].sort(() => Math.random() - 0.5);
-                
-                let choices = [correct, uniqueOthers[0], uniqueOthers[1], uniqueOthers[2]];
-                choices.sort(() => Math.random() - 0.5);
-
-                const container = document.getElementById("options-container");
-                container.innerHTML = "";
-                choices.forEach(c => {
-                    const btn = document.createElement("button");
-                    btn.className = "opt-btn";
-                    btn.innerText = c;
-                    btn.onclick = () => {
-                        if(c === correct) {
-                            speak(item.q);
-                            document.getElementById("message").innerText = "⭕ OK!";
-                            score++;
-                            setTimeout(nextQuestion, 800);
-                        } else {
-                            document.getElementById("message").innerText = "❌ " + correct;
-                            setTimeout(nextQuestion, 1500);
-                        }
-                    };
-                    container.appendChild(btn);
-                });
-            }
+            let correct = item.v; // Default Vietnamese
+            let others = allData.map(d => d.v).filter(v => v !== correct);
+            let choices = [correct, ...[...new Set(others)].sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
+            let container = document.getElementById("options-container");
+            container.innerHTML = "";
+            choices.forEach(c => {
+                let btn = document.createElement("button"); btn.className = "opt-btn"; btn.innerText = c;
+                btn.onclick = () => {
+                    if(c === correct) { document.getElementById("message").innerText = "⭕ OK!"; score++; setTimeout(nextQuestion, 800); }
+                    else { document.getElementById("message").innerText = "❌ " + correct; setTimeout(nextQuestion, 1500); }
+                };
+                container.appendChild(btn);
+            });
         }
 
-        function toggleAnswer() {
-            const lang = document.getElementById("lang-select").value;
-            const item = quizList[current];
-            if(!isAnswerShowing) {
-                document.getElementById("message").innerText = (lang === "vi") ? item.v : item.i;
-                speak(item.q);
-                isAnswerShowing = true;
-            } else {
-                document.getElementById("message").innerText = "";
-                isAnswerShowing = false;
-            }
-        }
-
-        function nextQuestion() {
-            current++;
-            if(current < quizList.length) showQuestion();
-            else showResult();
-        }
-
-        function showResult() {
-            document.getElementById("quiz-content").style.display = "none";
-            document.getElementById("result-content").style.display = "block";
-            const scoreArea = document.getElementById("score-display");
-            scoreArea.innerText = currentMode === 'test' ? Math.round((score/quizList.length)*100) + "%" : "Finish!";
-        }
+        function nextQuestion() { current++; if(current < quizList.length) showQuestion(); else showResult(); }
+        function showResult() { document.getElementById("quiz-content").style.display = "none"; document.getElementById("result-content").style.display = "block"; document.getElementById("score-display").innerText = score + "/" + quizList.length; }
 
         function showListPage() {
             showPage('list');
             const container = document.getElementById('list-container');
             container.innerHTML = "";
-            const lang = document.getElementById("lang-select").value;
+            document.getElementById('list-count').innerText = allData.length;
             allData.forEach(item => {
                 const div = document.createElement('div');
                 div.className = 'list-item';
-                div.onclick = () => speak(item.q);
-                const meaning = (lang === "vi") ? item.v : item.i;
-                div.innerHTML = `<div style="text-align:left;"><b style="font-size:20px; color:#FF5252;">${item.q}</b><br><span style="color:#666;">${meaning}</span></div><div>🔊</div>`;
+                let tag = item.g === 0 ? '<span class="cat-tag" style="background:#42A5F5;">めいし</span>' : item.g === 4 ? '<span class="cat-tag" style="background:#66BB6A;">けいようし</span>' : '<span class="cat-tag" style="background:#EF5350;">どうし</span>';
+                div.innerHTML = `<div style="text-align:left;"><b style="font-size:18px;">${item.q}</b>${tag}<br><span style="color:#666;">${item.v} / ${item.i}</span></div><div>🔊</div>`;
+                div.onclick = () => { let uttr = new SpeechSynthesisUtterance(item.q); uttr.lang = "ja-JP"; window.speechSynthesis.speak(uttr); };
                 container.appendChild(div);
             });
         }
