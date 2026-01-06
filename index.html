@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>トマト - N5 Verbs</title>
+    <link rel="apple-touch-icon" href="images/icon.jpg">
+    <style>
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding-bottom: 80px; }
+        .page { display: none; padding: 20px; animation: fadeIn 0.3s; }
+        .active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* ナビゲーション */
+        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 100; }
+        nav button { flex: 1; padding: 15px; border: none; background: none; font-weight: bold; font-size: 16px; color: #999; cursor: pointer; }
+        nav button.active-nav { color: #FF5252; border-top: 4px solid #FF5252; }
+
+        /* クイズカード */
+        .card { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 400px; margin: 40px auto; border: 4px solid #FF5252; transition: transform 0.3s; }
+        
+        /* トマトジャンプ・アニメーション */
+        .correct-jump { animation: tomato-jump 0.5s ease; }
+        @keyframes tomato-jump {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.1) translateY(-20px); }
+            50% { transform: rotate(5deg); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        .word { font-size: 45px; font-weight: bold; color: #FF5252; margin: 10px 0; }
+        .options { display: grid; gap: 10px; }
+        .opt-btn { padding: 18px; font-size: 18px; border: none; border-radius: 15px; background: #FFEBEE; border-bottom: 4px solid #FFCDD2; cursor: pointer; }
+        .opt-btn:active { transform: translateY(2px); border-bottom: none; }
+
+        /* リスト画面 */
+        .group-title { background: #FF5252; color: white; padding: 5px 15px; border-radius: 20px; display: inline-block; margin: 20px 0 10px; font-size: 14px; }
+        .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 12px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
+        .list-ja { font-size: 20px; font-weight: bold; color: #FF5252; }
+        
+        .mode-selector { background: #FF5252; padding: 10px; border-radius: 15px; display: inline-block; color: white; margin-bottom: 10px; }
+        #message { margin-top: 20px; font-weight: bold; font-size: 24px; height: 30px; }
+    </style>
+</head>
+<body>
+
+    <div id="quiz-page" class="page active">
+        <div class="mode-selector">
+            Chế độ: 
+            <select id="mode-select" onchange="initGame()">
+                <option value="ja-to-vi">Nhật → Việt</option>
+                <option value="vi-to-ja">Việt → Nhật</option>
+            </select>
+        </div>
+        <div class="card" id="main-card">
+            <div id="progress" style="font-size:14px; color:#999">1 / 50</div>
+            <div id="direction-text" style="font-weight:bold; background: #FFEBEE; padding:4px 10px; border-radius:10px; font-size:12px; display:inline-block; margin-top:10px; color:#FF5252;">Chọn ý nghĩa đúng</div>
+            <div id="word" class="word">...</div>
+            <div id="reading" style="color:#999; margin-bottom:20px;">...</div>
+            <div class="options" id="options-container"></div>
+            <div id="message"></div>
+        </div>
+    </div>
+
+    <div id="list-page" class="page">
+        <h2 style="color:#FF5252">Danh sách (50 từ)</h2>
+        <div id="verb-list-container"></div>
+    </div>
+
+    <nav>
+        <button id="nav-quiz" class="active-nav" onclick="showPage('quiz')">Học tập</button>
+        <button id="nav-list" onclick="showPage('list')">Danh sách</button>
+    </nav>
+
+    <script>
+        const allData = [
+            { q: "あう", r: "au", v: "gặp", g: 1 }, { q: "いく", r: "iku", v: "đi", g: 1 }, { q: "いう", r: "iu", v: "nói", g: 1 },
+            { q: "うたう", r: "utau", v: "hát", g: 1 }, { q: "うる", r: "uru", v: "bán", g: 1 }, { q: "おく", r: "oku", v: "đặt", g: 1 },
+            { q: "およぐ", r: "oyogu", v: "bơi", g: 1 }, { q: "かう", r: "kau", v: "mua", g: 1 }, { q: "かく", r: "kaku", v: "viết", g: 1 },
+            { q: "きく", r: "kiku", v: "nghe", g: 1 }, { q: "きる", r: "kiru", v: "cắt", g: 1 }, { q: "しる", r: "shiru", v: "biết", g: 1 },
+            { q: "すう", r: "suu", v: "hút", g: 1 }, { q: "すむ", r: "sumu", v: "sống", g: 1 }, { q: "だす", r: "dasu", v: "lấy ra", g: 1 },
+            { q: "たつ", r: "tatsu", v: "đứng", g: 1 }, { q: "つかう", r: "tsukau", v: "sử dụng", g: 1 }, { q: "つくる", r: "tsukuru", v: "chế biến", g: 1 },
+            { q: "てつだう", r: "tetsudau", v: "giúp đỡ", g: 1 }, { q: "とる", r: "toru", v: "chụp/lấy", g: 1 }, { q: "ならう", r: "narau", v: "học", g: 1 },
+            { q: "ぬぐ", r: "nugu", v: "cởi", g: 1 }, { q: "のむ", r: "nomu", v: "uống", g: 1 }, { q: "のる", r: "noru", v: "lên xe", g: 1 },
+            { q: "はいる", r: "hairu", v: "vào", g: 1 }, { q: "はなす", r: "hanasu", v: "nói chuyện", g: 1 }, { q: "まつ", r: "matsu", v: "đợi", g: 1 },
+            { q: "もつ", r: "motsu", v: "cầm/mang", g: 1 }, { q: "やすむ", r: "yasumu", v: "nghỉ ngơi", g: 1 },
+            { q: "あける", r: "akeru", v: "mở", g: 2 }, { q: "あげる", r: "ageru", v: "cho/tặng", g: 2 }, { q: "いれる", r: "ireru", v: "cho vào", g: 2 },
+            { q: "うまれる", r: "umareru", v: "sinh ra", g: 2 }, { q: "おきる", r: "okiru", v: "thức dậy", g: 2 }, { q: "おしえる", r: "oshieru", v: "dạy", g: 2 },
+            { q: "おぼえる", r: "oboeru", v: "nhớ", g: 2 }, { q: "かける", r: "kakeru", v: "gọi điện", g: 2 }, { q: "かりる", r: "kariru", v: "mượn", g: 2 },
+            { q: "きえる", r: "kieru", v: "tắt", g: 2 }, { q: "しめる", r: "shimeru", v: "đóng", g: 2 }, { q: "たべる", r: "taberu", v: "ăn", g: 2 },
+            { q: "でる", r: "deru", v: "ra ngoài", g: 2 }, { q: "ならべる", r: "naraberu", v: "xếp hàng", g: 2 }, { q: "ねる", r: "neru", v: "ngủ", g: 2 },
+            { q: "みせる", r: "miseru", v: "cho xem", g: 2 }, { q: "みる", r: "miru", v: "xem", g: 2 }, { q: "わすれる", r: "wasureru", v: "quên", g: 2 },
+            { q: "くる", r: "kuru", v: "đến", g: 3 }, { q: "する", r: "suru", v: "làm", g: 3 }, { q: "さんぽする", r: "sanposuru", v: "đi dạo", g: 3 }
+        ];
+
+        let quizList = [];
+        let current = 0;
+
+        function speak(text) {
+            const uttr = new SpeechSynthesisUtterance();
+            uttr.text = text;
+            uttr.lang = "ja-JP";
+            speechSynthesis.speak(uttr);
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId + '-page').classList.add('active');
+            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-nav'));
+            document.getElementById('nav-' + pageId).classList.add('active-nav');
+            if(pageId === 'list') renderList();
+        }
+
+        function renderList() {
+            const container = document.getElementById('verb-list-container');
+            container.innerHTML = "";
+            [1, 2, 3].forEach(groupNum => {
+                const title = document.createElement('div');
+                title.className = 'group-title';
+                title.innerText = "Group " + groupNum;
+                container.appendChild(title);
+                allData.filter(d => d.g === groupNum).forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'list-item';
+                    div.onclick = () => speak(item.q);
+                    div.innerHTML = `<div style="text-align:left"><div class="list-ja">${item.q} <span style="font-size:12px;color:#ccc">${item.r}</span></div><div style="color:#666">${item.v}</div></div><div style="color:#FF5252">🔊</div>`;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function initGame() {
+            quizList = [...allData].sort(() => Math.random() - 0.5);
+            current = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const mode = document.getElementById("mode-select").value;
+            const item = quizList[current];
+            const card = document.getElementById("main-card");
+            card.classList.remove("correct-jump");
+            document.getElementById("progress").innerText = (current + 1) + " / " + quizList.length;
+            
+            let correct, opts;
+            if(mode === "ja-to-vi") {
+                document.getElementById("word").innerText = item.q;
+                document.getElementById("reading").innerText = item.r;
+                correct = item.v;
+                opts = allData.map(d => d.v);
+            } else {
+                document.getElementById("word").innerText = item.v;
+                document.getElementById("reading").innerText = "";
+                correct = item.q;
+                opts = allData.map(d => d.q);
+            }
+
+            let choices = [correct];
+            while(choices.length < 4) {
+                let r = opts[Math.floor(Math.random() * opts.length)];
+                if(!choices.includes(r)) choices.push(r);
+            }
+            choices.sort(() => Math.random() - 0.5);
+
+            const container = document.getElementById("options-container");
+            container.innerHTML = "";
+            choices.forEach(c => {
+                const btn = document.createElement("button");
+                btn.className = "opt-btn";
+                btn.innerText = c;
+                btn.onclick = () => {
+                    if(c === correct) {
+                        speak(item.q);
+                        card.classList.add("correct-jump");
+                        document.getElementById("message").innerText = "⭕ ĐÚNG!";
+                        setTimeout(() => { 
+                            current++; 
+                            if(current < quizList.length) showQuestion(); 
+                            else { alert("Chúc mừng! Bạn đã hoàn thành!"); initGame(); }
+                            document.getElementById("message").innerText = "";
+                        }, 600);
+                    } else {
+                        document.getElementById("message").innerText = "❌ SAI!";
+                    }
+                };
+                container.appendChild(btn);
+            });
+        }
+        initGame();
+    </script>
+</body>
+</html>
