@@ -9,7 +9,7 @@
     <link rel="apple-touch-icon" href="images/icon.png">
     <link rel="icon" type="image/png" href="images/icon.png">
 
-    <title>トマト N5 - Hiragana Only</title>
+    <title>トマト N5 - Bug Fixed</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         .page { display: none; padding: 20px; min-height: 100vh; box-sizing: border-box; }
@@ -36,7 +36,7 @@
         .mode-selector { background: #FF5252; padding: 10px; border-radius: 15px; display: inline-block; color: white; margin-bottom: 10px; font-size: 12px; }
         select { border-radius: 5px; border: none; padding: 3px; background: white; margin: 0 5px; }
         .btn-back { background: #666; color: white; border: none; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; }
-        .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 12px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
+        .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 12px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; padding: 15px; }
     </style>
 </head>
 <body>
@@ -73,9 +73,8 @@
             <div id="quiz-content">
                 <div id="progress" style="font-size:14px; color:#999">...</div>
                 <div id="word" class="word">...</div>
-                <div id="reading" style="color:#999; margin-bottom:15px; height:24px; font-size:20px;"></div>
                 <div class="options" id="options-container"></div>
-                <div id="teacher-controls" style="display:none; gap:10px; justify-content:center;">
+                <div id="teacher-controls" style="display:none; gap:10px; justify-content:center; margin-top:20px;">
                     <button class="opt-btn" onclick="toggleAnswer()" style="background:#333; color:white;">Answer</button>
                     <button class="opt-btn" onclick="nextQuestion()" style="background:#FF5252; color:white;">Next</button>
                 </div>
@@ -97,83 +96,64 @@
 
     <script>
         const allData = [
-            // どうし (45こ) - かんじなし
-            { q: "あう", r: "au", v: "gặp", i: "bertemu", g: 1 },
-            { q: "いく", r: "iku", v: "đi", i: "pergi", g: 1 },
-            { q: "かえる", r: "kaeru", v: "về", i: "pulang", g: 1 },
-            { q: "のむ", r: "nomu", v: "uống", i: "minum", g: 1 },
-            { q: "かう", r: "kau", v: "mua", i: "membeli", g: 1 },
-            { q: "きく", r: "kiku", v: "nghe", i: "mendengar", g: 1 },
-            { q: "かく", r: "kaku", v: "viết", i: "menulis", g: 1 },
-            { q: "よむ", r: "yomu", v: "đọc", i: "membaca", g: 1 },
-            { q: "いう", r: "iu", v: "nói", i: "berbicara", g: 1 },
-            { q: "まつ", r: "matsu", v: "đợi", i: "menunggu", g: 1 },
-            { q: "よぶ", r: "yobu", v: "gọi", i: "memanggil", g: 1 },
-            { q: "あそぶ", r: "asobu", v: "chơi", i: "bermain", g: 1 },
-            { q: "いそぐ", r: "isogu", v: "vội vàng", i: "terburu-buru", g: 1 },
-            { q: "およぐ", r: "oyogu", v: "bơi", i: "berenang", g: 1 },
-            { q: "はなす", r: "hanasu", v: "nói chuyện", i: "berbicara", g: 1 },
-            { q: "たつ", r: "tatsu", v: "đứng", i: "berdiri", g: 1 },
-            { q: "すわる", r: "suwaru", v: "ngồi", i: "duduk", g: 1 },
-            { q: "はいる", r: "hairu", v: "vào", i: "masuk", g: 1 },
-            { q: "うる", r: "uru", v: "bán", i: "menjual", g: 1 },
-            { q: "つくる", r: "tsukuru", v: "làm", i: "membuat", g: 1 },
-            { q: "しる", r: "shiru", v: "biết", i: "tahu", g: 1 },
-            { q: "わかる", r: "wakaru", v: "hiểu", i: "mengerti", g: 1 },
-            { q: "おわる", r: "owaru", v: "xong", i: "selesai", g: 1 },
-            { q: "おくる", r: "okuru", v: "gửi", i: "mengirim", g: 1 },
-            { q: "うたう", r: "utau", v: "hát", i: "bernyanyi", g: 1 },
-            { q: "あるく", r: "aruku", v: "đi bộ", i: "berjalan kaki", g: 1 },
-            { q: "おく", r: "oku", v: "đặt/để", i: "menaruh", g: 1 },
-            { q: "だす", r: "dasu", v: "lấy ra", i: "mengeluarkan", g: 1 },
-            { q: "もつ", r: "motsu", v: "cầm/nắm", i: "memegang", g: 1 },
-            { q: "やすむ", r: "yasumu", v: "nghỉ ngơi", i: "beristirahat", g: 1 },
-            { q: "おきる", r: "okiru", v: "thức dậy", i: "bangun", g: 2 },
-            { q: "ねる", r: "neru", v: "ngủ", i: "tidur", g: 2 },
-            { q: "たべる", r: "taberu", v: "ăn", i: "makan", g: 2 },
-            { q: "みる", r: "miru", v: "xem/nhìn", i: "melihat", g: 2 },
-            { q: "あける", r: "akeru", v: "mở", i: "membuka", g: 2 },
-            { q: "しめる", r: "shimeru", v: "đóng", i: "menutup", g: 2 },
-            { q: "おしえる", r: "oshieru", v: "dạy", i: "mengajar", g: 2 },
-            { q: "わすれる", r: "wasureru", v: "quên", i: "lupa", g: 2 },
-            { q: "でる", r: "deru", v: "ra ngoài", i: "keluar", g: 2 },
-            { q: "かりる", r: "kariru", v: "mượn", i: "meminjam", g: 2 },
-            { q: "くる", r: "kuru", v: "đến", i: "datang", g: 3 },
-            { q: "する", r: "suru", v: "làm", i: "melakukan", g: 3 },
-            { q: "べんきょうする", r: "benkyou-suru", v: "học", i: "belajar", g: 3 },
-            { q: "かいものする", r: "kaimono-suru", v: "mua sắm", i: "belanja", g: 3 },
-            { q: "さんぽする", r: "sanpo-suru", v: "đi dạo", i: "jalan-jalan", g: 3 },
+            // どうし (45語) - すべてひらがな
+            { q: "あう", v: "gặp", i: "bertemu", g: 1 },
+            { q: "いく", v: "đi", i: "pergi", g: 1 },
+            { q: "かえる", v: "về", i: "pulang", g: 1 },
+            { q: "のむ", v: "uống", i: "minum", g: 1 },
+            { q: "かう", v: "mua", i: "membeli", g: 1 },
+            { q: "きく", v: "nghe", i: "mendengar", g: 1 },
+            { q: "かく", v: "viết", i: "menulis", g: 1 },
+            { q: "よむ", v: "đọc", i: "membaca", g: 1 },
+            { q: "いう", v: "nói", i: "berbicara", g: 1 },
+            { q: "まつ", v: "đợi", i: "menunggu", g: 1 },
+            { q: "よぶ", v: "gọi", i: "memanggil", g: 1 },
+            { q: "あそぶ", v: "chơi", i: "bermain", g: 1 },
+            { q: "いそぐ", v: "vội vàng", i: "terburu-buru", g: 1 },
+            { q: "およぐ", v: "bơi", i: "berenang", g: 1 },
+            { q: "はなす", v: "nói chuyện", i: "berbicara", g: 1 },
+            { q: "たつ", v: "đứng", i: "berdiri", g: 1 },
+            { q: "すわる", v: "ngồi", i: "duduk", g: 1 },
+            { q: "はいる", v: "vào", i: "masuk", g: 1 },
+            { q: "うる", v: "bán", i: "menjual", g: 1 },
+            { q: "つくる", v: "làm", i: "membuat", g: 1 },
+            { q: "しる", v: "biết", i: "tahu", g: 1 },
+            { q: "わかる", v: "hiểu", i: "mengerti", g: 1 },
+            { q: "おわる", v: "xong", i: "selesai", g: 1 },
+            { q: "おくる", v: "gửi", i: "mengirim", g: 1 },
+            { q: "うたう", v: "hát", i: "bernyanyi", g: 1 },
+            { q: "あるく", v: "đi bộ", i: "berjalan kaki", g: 1 },
+            { q: "おく", v: "đặt/để", i: "menaruh", g: 1 },
+            { q: "だす", v: "lấy ra", i: "mengeluarkan", g: 1 },
+            { q: "もつ", v: "cầm/nắm", i: "memegang", g: 1 },
+            { q: "やすむ", v: "nghỉ ngơi", i: "beristirahat", g: 1 },
+            { q: "おきる", v: "thức dậy", i: "bangun", g: 2 },
+            { q: "ねる", v: "ngủ", i: "tidur", g: 2 },
+            { q: "たべる", v: "ăn", i: "makan", g: 2 },
+            { q: "みる", v: "xem/nhìn", i: "melihat", g: 2 },
+            { q: "あける", v: "mở", i: "membuka", g: 2 },
+            { q: "しめる", v: "đóng", i: "menutup", g: 2 },
+            { q: "おしえる", v: "dạy", i: "mengajar", g: 2 },
+            { q: "わすれる", v: "quên", i: "lupa", g: 2 },
+            { q: "でる", v: "ra ngoài", i: "keluar", g: 2 },
+            { q: "かりる", v: "mượn", i: "meminjam", g: 2 },
+            { q: "くる", v: "đến", i: "datang", g: 3 },
+            { q: "する", v: "làm", i: "melakukan", g: 3 },
+            { q: "べんきょうする", v: "học", i: "belajar", g: 3 },
+            { q: "かいものする", v: "mua sắm", i: "belanja", g: 3 },
+            { q: "さんぽする", v: "đi dạo", i: "jalan-jalan", g: 3 },
 
-            // めいし (20こ)
-            { q: "がっこう", r: "gakkou", v: "trường học", i: "sekolah", g: 0 },
-            { q: "せんせい", r: "sensei", v: "giáo viên", i: "guru", g: 0 },
-            { q: "ともだち", r: "tomodachi", v: "bạn bè", i: "teman", g: 0 },
-            { q: "みず", r: "mizu", v: "nước", i: "air", g: 0 },
-            { q: "ごはん", r: "gohan", v: "cơm", i: "nasi", g: 0 },
-            { q: "ほん", r: "hon", v: "sách", i: "buku", g: 0 },
-            { q: "くるま", r: "kuruma", v: "xe hơi", i: "mobil", g: 0 },
-            { q: "かばん", r: "kaban", v: "túi xách", i: "tas", g: 0 },
-            { q: "でんわ", r: "denwa", v: "điện thoại", i: "telepon", g: 0 },
-            { q: "とけい", r: "tokei", v: "đồng hồ", i: "jam", g: 0 },
-            { q: "つくえ", r: "tsukue", v: "bàn", i: "meja", g: 0 },
-            { q: "いす", r: "isu", v: "ghế", i: "kursi", g: 0 },
-            { q: "ぺん", r: "pen", v: "bút", i: "pena", g: 0 },
-            { q: "のーと", r: "no-to", v: "vở", i: "buku catatan", g: 0 },
-            { q: "しんぶん", r: "shinbun", v: "báo", i: "koran", g: 0 },
-            { q: "かぎ", r: "kagi", v: "chìa khóa", i: "kunci", g: 0 },
-            { q: "くつ", r: "kutsu", v: "giày", i: "sepatu", g: 0 },
-            { q: "ふく", r: "fuku", v: "quần áo", i: "pakaian", g: 0 },
-            { q: "おかね", r: "okane", v: "tiền", i: "uang", g: 0 },
-            { q: "へや", r: "heya", v: "phòng", i: "kamar", g: 0 },
+            // めいし
+            { q: "がっこう", v: "trường học", i: "sekolah", g: 0 },
+            { q: "せんせい", v: "giáo viên", i: "guru", g: 0 },
+            { q: "ともだち", v: "bạn bè", i: "teman", g: 0 },
+            { q: "ごはん", v: "cơm", i: "nasi", g: 0 },
+            { q: "ほん", v: "sách", i: "buku", g: 0 },
 
             // けいようし
-            { q: "たかい", r: "takai", v: "cao/đắt", i: "tinggi/mahal", g: 4 },
-            { q: "やすい", r: "yasui", v: "rẻ", i: "murah", g: 4 },
-            { q: "おいしい", r: "oishii", v: "ngon", i: "enak", g: 4 },
-            { q: "あつい", r: "atsui", v: "nóng", i: "panas", g: 4 },
-            { q: "さむい", r: "samui", v: "lạnh", i: "dingin", g: 4 },
-            { q: "おおきい", r: "ookii", v: "lớn", i: "besar", g: 4 },
-            { q: "ちいさい", r: "chiisai", v: "nhỏ", i: "kecil", g: 4 }
+            { q: "たかい", v: "cao/đắt", i: "tinggi/mahal", g: 4 },
+            { q: "やすい", v: "rẻ", i: "murah", g: 4 },
+            { q: "おいしい", v: "ngon", i: "enak", g: 4 }
         ];
 
         let currentCategory = '';
@@ -248,17 +228,20 @@
 
             document.getElementById("progress").innerText = (current + 1) + " / " + quizList.length;
             document.getElementById("word").innerText = item.q;
-            document.getElementById("reading").innerText = isTeacher ? "" : item.r;
             document.getElementById("message").innerText = "";
 
             if(!isTeacher) {
                 const correct = (lang === "vi") ? item.v : item.i;
-                const allMeanings = allData.map(d => (lang === "vi") ? d.v : d.i);
-                let choices = [correct];
-                while(choices.length < 4) {
-                    let r = allMeanings[Math.floor(Math.random() * allMeanings.length)];
-                    if(!choices.includes(r)) choices.push(r);
-                }
+                
+                // 修正：ハズレの選択肢を確実に4つ作る（現在のカテゴリーだけでなく全データから選ぶことで、選択肢が足りなくなるバグを防ぐ）
+                const others = allData
+                    .map(d => (lang === "vi") ? d.v : d.i)
+                    .filter(v => v !== correct);
+                
+                // 重複を除去
+                const uniqueOthers = [...new Set(others)].sort(() => Math.random() - 0.5);
+                
+                let choices = [correct, uniqueOthers[0], uniqueOthers[1], uniqueOthers[2]];
                 choices.sort(() => Math.random() - 0.5);
 
                 const container = document.getElementById("options-container");
@@ -288,12 +271,10 @@
             const item = quizList[current];
             if(!isAnswerShowing) {
                 document.getElementById("message").innerText = (lang === "vi") ? item.v : item.i;
-                document.getElementById("reading").innerText = item.r;
                 speak(item.q);
                 isAnswerShowing = true;
             } else {
                 document.getElementById("message").innerText = "";
-                document.getElementById("reading").innerText = "";
                 isAnswerShowing = false;
             }
         }
