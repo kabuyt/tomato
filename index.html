@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="トマト N5">
     <link rel="apple-touch-icon" href="images/icon.png">
     <link rel="icon" type="image/png" href="images/icon.png">
 
-    <title>トマト N5 Pro - Vocab Up</title>
+    <title>トマト N5 - Hiragana Only</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        .page { display: none; padding: 20px; min-height: 100vh; box-sizing: border-box; animation: fadeIn 0.3s; }
+        .page { display: none; padding: 20px; min-height: 100vh; box-sizing: border-box; }
         .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         .logo-container { margin-top: 30px; }
         .logo-img { width: 100px; height: 100px; object-fit: contain; border-radius: 20%; }
         .menu-grid { display: grid; gap: 12px; max-width: 400px; margin: 20px auto; padding: 10px; }
@@ -27,25 +24,19 @@
         }
         .menu-btn:active { transform: translateY(2px); border-bottom-width: 2px; }
         .list-btn { background: #FFAB91; color: white; border-bottom-color: #D84315; margin-top: 10px; }
-
         #mode-selection { background: white; border-radius: 25px; padding: 20px; border: 3px solid #FF5252; margin-top: 10px; display: none; }
-
         .card { 
             background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
             max-width: 500px; margin: 10px auto; border: 4px solid #FF5252; min-height: 380px; 
             display: flex; flex-direction: column; justify-content: center; position: relative; 
         }
         .word { font-size: 45px; font-weight: bold; color: #FF5252; margin: 10px 0; }
-        .teacher-mode .word { font-size: 80px; }
         .options { display: grid; gap: 10px; margin-top: 10px; }
         .opt-btn { padding: 18px; font-size: 18px; border: none; border-radius: 15px; background: #FFEBEE; border-bottom: 4px solid #FFCDD2; cursor: pointer; }
-        
         .mode-selector { background: #FF5252; padding: 10px; border-radius: 15px; display: inline-block; color: white; margin-bottom: 10px; font-size: 12px; }
         select { border-radius: 5px; border: none; padding: 3px; background: white; margin: 0 5px; }
         .btn-back { background: #666; color: white; border: none; padding: 10px 20px; border-radius: 12px; margin-bottom: 15px; cursor: pointer; }
-
         .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 12px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
-        .list-ja { font-size: 20px; font-weight: bold; color: #FF5252; text-align: left; }
     </style>
 </head>
 <body>
@@ -55,22 +46,20 @@
             <img src="images/icon.png" alt="🍅" class="logo-img" onerror="this.style.display='none'; document.getElementById('emoji-logo').style.display='block';">
             <div id="emoji-logo" style="display:none; font-size:80px;">🍅</div>
         </div>
-        <h1 style="color:#FF5252; margin-top: 10px;">トマト N5</h1>
-        
-        <div class="menu-grid" id="category-buttons">
-            <button class="menu-btn" onclick="selectCategory('verb')">🍎 Động từ (Verb)</button>
-            <button class="menu-btn" onclick="selectCategory('noun')">📘 Danh từ (Noun)</button>
-            <button class="menu-btn" onclick="selectCategory('adj')">✨ Tính từ (Adj)</button>
-            
+        <h1 style="color:#FF5252;">トマト N5</h1>
+        <div class="menu-grid">
+            <button class="menu-btn" onclick="selectCategory('verb')">🍎 どうし (Verb)</button>
+            <button class="menu-btn" onclick="selectCategory('noun')">📘 めいし (Noun)</button>
+            <button class="menu-btn" onclick="selectCategory('adj')">✨ けいようし (Adj)</button>
             <div id="mode-selection">
-                <p id="selected-label" style="font-weight:bold; color:#FF5252; margin-bottom:15px;"></p>
+                <p id="selected-label" style="font-weight:bold; color:#FF5252;"></p>
                 <div style="display:grid; gap:10px;">
-                    <button class="menu-btn" style="background:#FFF3E0;" onclick="startGame('practice')">📖 Luyện tập (All)</button>
-                    <button class="menu-btn" style="background:#FFEBEE;" onclick="startGame('test')">📝 Kiểm tra (10)</button>
-                    <button class="btn-back" onclick="cancelSelection()">Quay lại</button>
+                    <button class="menu-btn" style="background:#FFF3E0;" onclick="startGame('practice')">📖 れんしゅう (All)</button>
+                    <button class="menu-btn" style="background:#FFEBEE;" onclick="startGame('test')">📝 てすと (10)</button>
+                    <button class="btn-back" onclick="cancelSelection()">もどる</button>
                 </div>
             </div>
-            <button class="menu-btn list-btn" onclick="showListPage()">📋 Danh sách (List)</button>
+            <button class="menu-btn list-btn" onclick="showListPage()">📋 リストをみる</button>
         </div>
     </div>
 
@@ -93,22 +82,22 @@
                 <div id="message" style="margin-top:20px; font-weight:bold; font-size:26px; height:30px; color:#FF5252;"></div>
             </div>
             <div id="result-content" style="display:none;">
-                <h2 style="color:#FF5252;">Finish!</h2>
+                <h2 style="color:#FF5252;">おわり！</h2>
                 <div id="score-display" style="font-size:60px; font-weight:bold; color:#FF5252; margin:20px 0;"></div>
-                <button class="menu-btn" onclick="goToMenu()" style="width:100%">Về Menu</button>
+                <button class="menu-btn" onclick="goToMenu()" style="width:100%">Menuにもどる</button>
             </div>
         </div>
     </div>
 
     <div id="list-page" class="page">
-        <button class="btn-back" onclick="goToMenu()">← Back</button>
-        <h2 style="color:#FF5252;">Danh sách</h2>
+        <button class="btn-back" onclick="goToMenu()">← もどる</button>
+        <h2 style="color:#FF5252;">ことばのリスト</h2>
         <div id="list-container"></div>
     </div>
 
     <script>
         const allData = [
-            // --- 動詞 (g:1, 2, 3) 合計45語 ---
+            // どうし (45こ) - かんじなし
             { q: "あう", r: "au", v: "gặp", i: "bertemu", g: 1 },
             { q: "いく", r: "iku", v: "đi", i: "pergi", g: 1 },
             { q: "かえる", r: "kaeru", v: "về", i: "pulang", g: 1 },
@@ -128,13 +117,17 @@
             { q: "すわる", r: "suwaru", v: "ngồi", i: "duduk", g: 1 },
             { q: "はいる", r: "hairu", v: "vào", i: "masuk", g: 1 },
             { q: "うる", r: "uru", v: "bán", i: "menjual", g: 1 },
-            { q: "つくる", r: "tsukuru", v: "chế tạo/làm", i: "membuat", g: 1 },
+            { q: "つくる", r: "tsukuru", v: "làm", i: "membuat", g: 1 },
             { q: "しる", r: "shiru", v: "biết", i: "tahu", g: 1 },
             { q: "わかる", r: "wakaru", v: "hiểu", i: "mengerti", g: 1 },
-            { q: "おわる", r: "owaru", v: "kết thúc", i: "selesai", g: 1 },
+            { q: "おわる", r: "owaru", v: "xong", i: "selesai", g: 1 },
             { q: "おくる", r: "okuru", v: "gửi", i: "mengirim", g: 1 },
-            { q: "かう", r: "kau", v: "nuôi (thú)", i: "memelihara", g: 1 },
             { q: "うたう", r: "utau", v: "hát", i: "bernyanyi", g: 1 },
+            { q: "あるく", r: "aruku", v: "đi bộ", i: "berjalan kaki", g: 1 },
+            { q: "おく", r: "oku", v: "đặt/để", i: "menaruh", g: 1 },
+            { q: "だす", r: "dasu", v: "lấy ra", i: "mengeluarkan", g: 1 },
+            { q: "もつ", r: "motsu", v: "cầm/nắm", i: "memegang", g: 1 },
+            { q: "やすむ", r: "yasumu", v: "nghỉ ngơi", i: "beristirahat", g: 1 },
             { q: "おきる", r: "okiru", v: "thức dậy", i: "bangun", g: 2 },
             { q: "ねる", r: "neru", v: "ngủ", i: "tidur", g: 2 },
             { q: "たべる", r: "taberu", v: "ăn", i: "makan", g: 2 },
@@ -145,17 +138,13 @@
             { q: "わすれる", r: "wasureru", v: "quên", i: "lupa", g: 2 },
             { q: "でる", r: "deru", v: "ra ngoài", i: "keluar", g: 2 },
             { q: "かりる", r: "kariru", v: "mượn", i: "meminjam", g: 2 },
-            { q: "あげる", r: "ageru", v: "cho/tặng", i: "memberi", g: 2 },
-            { q: "くれる", r: "kureru", v: "cho (mình)", i: "memberi", g: 2 },
             { q: "くる", r: "kuru", v: "đến", i: "datang", g: 3 },
             { q: "する", r: "suru", v: "làm", i: "melakukan", g: 3 },
-            { q: "べんきょうする", r: "benkyou-suru", v: "học tập", i: "belajar", g: 3 },
-            { q: "けっこんする", r: "kekkon-suru", v: "kết hôn", i: "menikah", g: 3 },
-            { q: "かいものする", r: "kaimono-suru", v: "mua sắm", i: "berbelanja", g: 3 },
+            { q: "べんきょうする", r: "benkyou-suru", v: "học", i: "belajar", g: 3 },
+            { q: "かいものする", r: "kaimono-suru", v: "mua sắm", i: "belanja", g: 3 },
             { q: "さんぽする", r: "sanpo-suru", v: "đi dạo", i: "jalan-jalan", g: 3 },
-            { q: "コピーする", r: "kopi-suru", v: "copy", i: "fotokopi", g: 3 },
 
-            // --- 名詞 (g:0) ---
+            // めいし (20こ)
             { q: "がっこう", r: "gakkou", v: "trường học", i: "sekolah", g: 0 },
             { q: "せんせい", r: "sensei", v: "giáo viên", i: "guru", g: 0 },
             { q: "ともだち", r: "tomodachi", v: "bạn bè", i: "teman", g: 0 },
@@ -163,14 +152,26 @@
             { q: "ごはん", r: "gohan", v: "cơm", i: "nasi", g: 0 },
             { q: "ほん", r: "hon", v: "sách", i: "buku", g: 0 },
             { q: "くるま", r: "kuruma", v: "xe hơi", i: "mobil", g: 0 },
+            { q: "かばん", r: "kaban", v: "túi xách", i: "tas", g: 0 },
+            { q: "でんわ", r: "denwa", v: "điện thoại", i: "telepon", g: 0 },
+            { q: "とけい", r: "tokei", v: "đồng hồ", i: "jam", g: 0 },
+            { q: "つくえ", r: "tsukue", v: "bàn", i: "meja", g: 0 },
+            { q: "いす", r: "isu", v: "ghế", i: "kursi", g: 0 },
+            { q: "ぺん", r: "pen", v: "bút", i: "pena", g: 0 },
+            { q: "のーと", r: "no-to", v: "vở", i: "buku catatan", g: 0 },
+            { q: "しんぶん", r: "shinbun", v: "báo", i: "koran", g: 0 },
+            { q: "かぎ", r: "kagi", v: "chìa khóa", i: "kunci", g: 0 },
+            { q: "くつ", r: "kutsu", v: "giày", i: "sepatu", g: 0 },
+            { q: "ふく", r: "fuku", v: "quần áo", i: "pakaian", g: 0 },
+            { q: "おかね", r: "okane", v: "tiền", i: "uang", g: 0 },
+            { q: "へや", r: "heya", v: "phòng", i: "kamar", g: 0 },
 
-            // --- 形容詞 (g:4) ---
+            // けいようし
             { q: "たかい", r: "takai", v: "cao/đắt", i: "tinggi/mahal", g: 4 },
             { q: "やすい", r: "yasui", v: "rẻ", i: "murah", g: 4 },
             { q: "おいしい", r: "oishii", v: "ngon", i: "enak", g: 4 },
             { q: "あつい", r: "atsui", v: "nóng", i: "panas", g: 4 },
             { q: "さむい", r: "samui", v: "lạnh", i: "dingin", g: 4 },
-            { q: "いい", r: "ii", v: "tốt", i: "baik", g: 4 },
             { q: "おおきい", r: "ookii", v: "lớn", i: "besar", g: 4 },
             { q: "ちいさい", r: "chiisai", v: "nhỏ", i: "kecil", g: 4 }
         ];
@@ -197,14 +198,14 @@
         function selectCategory(cat) {
             currentCategory = cat;
             document.getElementById('mode-selection').style.display = 'block';
-            const labels = {verb: "🍎 Động từ", noun: "📘 Danh từ", adj: "✨ Tính từ"};
+            const labels = {verb: "🍎 どうし", noun: "📘 めいし", adj: "✨ けいようし"};
             document.getElementById('selected-label').innerText = labels[cat];
-            document.querySelectorAll('.menu-btn:not(#mode-selection button)').forEach(b => b.style.display = 'none');
+            document.querySelectorAll('.menu-grid > .menu-btn').forEach(b => b.style.display = 'none');
         }
 
         function cancelSelection() {
             document.getElementById('mode-selection').style.display = 'none';
-            document.querySelectorAll('.menu-btn').forEach(b => b.style.display = 'flex');
+            document.querySelectorAll('.menu-grid > .menu-btn').forEach(b => b.style.display = 'flex');
         }
 
         function startGame(mode) {
@@ -225,10 +226,8 @@
             document.getElementById("options-container").style.display = isTeacher ? "none" : "grid";
             document.getElementById("quiz-content").style.display = "block";
             document.getElementById("result-content").style.display = "none";
-            document.getElementById("message").innerText = "";
 
             let data;
-            // 修正：gが1,2,3のものをすべて動詞として抽出
             if(currentCategory === 'verb') data = allData.filter(d => d.g >= 1 && d.g <= 3);
             else if(currentCategory === 'noun') data = allData.filter(d => d.g === 0);
             else data = allData.filter(d => d.g === 4);
@@ -254,10 +253,10 @@
 
             if(!isTeacher) {
                 const correct = (lang === "vi") ? item.v : item.i;
-                const allOpts = allData.map(d => (lang === "vi") ? d.v : d.i);
+                const allMeanings = allData.map(d => (lang === "vi") ? d.v : d.i);
                 let choices = [correct];
                 while(choices.length < 4) {
-                    let r = allOpts[Math.floor(Math.random() * allOpts.length)];
+                    let r = allMeanings[Math.floor(Math.random() * allMeanings.length)];
                     if(!choices.includes(r)) choices.push(r);
                 }
                 choices.sort(() => Math.random() - 0.5);
@@ -322,16 +321,10 @@
                 div.className = 'list-item';
                 div.onclick = () => speak(item.q);
                 const meaning = (lang === "vi") ? item.v : item.i;
-                div.innerHTML = `<div class="list-ja">${item.q} <small style="color:#ccc">${item.r}</small><br><span style="font-size:14px; color:#666">${meaning}</span></div><div>🔊</div>`;
+                div.innerHTML = `<div style="text-align:left;"><b style="font-size:20px; color:#FF5252;">${item.q}</b><br><span style="color:#666;">${meaning}</span></div><div>🔊</div>`;
                 container.appendChild(div);
             });
         }
-
-        window.addEventListener("keydown", (e) => {
-            if(document.getElementById("teacher-switch").value !== "teacher") return;
-            if(e.code === "Space") { e.preventDefault(); toggleAnswer(); }
-            if(e.code === "ArrowRight") { nextQuestion(); }
-        });
     </script>
 </body>
 </html>
