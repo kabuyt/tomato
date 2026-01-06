@@ -4,35 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>トマト - N5 Multi-Lang</title>
+    <title>トマト - N5 Test Mode</title>
     <link rel="apple-touch-icon" href="images/icon.png">
     <style>
-        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding-bottom: 80px; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding-bottom: 80px; overflow-x: hidden; }
         .page { display: none; padding: 20px; animation: fadeIn 0.3s; }
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* ナビゲーション */
-        nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 100; }
+        nav { position: fixed; bottom: 0; left:0; width: 100%; background: white; display: flex; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 100; }
         nav button { flex: 1; padding: 15px; border: none; background: none; font-weight: bold; font-size: 16px; color: #999; cursor: pointer; }
         nav button.active-nav { color: #FF5252; border-top: 4px solid #FF5252; }
 
-        /* クイズカード */
-        .card { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 400px; margin: 20px auto; border: 4px solid #FF5252; }
+        .card { background: white; border-radius: 30px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 400px; margin: 10px auto; border: 4px solid #FF5252; min-height: 320px; display: flex; flex-direction: column; justify-content: center; position: relative; }
         .correct-jump { animation: tomato-jump 0.5s ease; }
         @keyframes tomato-jump { 0% { transform: scale(1); } 30% { transform: scale(1.1) translateY(-20px); } 100% { transform: scale(1); } }
         
-        .word { font-size: 45px; font-weight: bold; color: #FF5252; margin: 10px 0; }
-        .options { display: grid; gap: 10px; }
-        .opt-btn { padding: 18px; font-size: 18px; border: none; border-radius: 15px; background: #FFEBEE; border-bottom: 4px solid #FFCDD2; cursor: pointer; }
+        .word { font-size: 42px; font-weight: bold; color: #FF5252; margin: 10px 0; min-height: 50px; }
+        .options { display: grid; gap: 10px; margin-top: 10px; }
+        .opt-btn { padding: 16px; font-size: 17px; border: none; border-radius: 15px; background: #FFEBEE; border-bottom: 4px solid #FFCDD2; cursor: pointer; }
+        .opt-btn:active { transform: translateY(2px); border-bottom-width: 1px; }
 
-        /* リスト表示 */
         .group-title { background: #FF5252; color: white; padding: 5px 15px; border-radius: 20px; display: inline-block; margin: 20px 0 10px; font-size: 14px; }
         .list-item { background: white; margin: 8px auto; padding: 12px; border-radius: 12px; max-width: 500px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #FFCDD2; }
         .list-ja { font-size: 20px; font-weight: bold; color: #FF5252; }
         
-        .mode-selector { background: #FF5252; padding: 10px; border-radius: 15px; display: inline-block; color: white; margin-bottom: 10px; font-size: 12px; }
-        select { border-radius: 5px; border: none; padding: 3px; cursor: pointer; background: white; }
+        .mode-selector { background: #FF5252; padding: 10px; border-radius: 15px; display: inline-block; color: white; margin-bottom: 15px; font-size: 12px; }
+        select { border-radius: 5px; border: none; padding: 4px; cursor: pointer; background: white; margin: 0 5px; font-size: 12px; }
+
+        .result-score { font-size: 60px; font-weight: bold; color: #FF5252; margin: 10px 0; }
+        .btn-retry { background: #FF5252; color: white; border: none; padding: 15px 40px; border-radius: 50px; font-size: 18px; margin-top: 20px; cursor: pointer; box-shadow: 0 4px 0 #c0392b; }
+        .btn-retry:active { transform: translateY(2px); box-shadow: none; }
     </style>
 </head>
 <body>
@@ -46,17 +48,25 @@
             </select>
             Mode:
             <select id="mode-select" onchange="initGame()">
-                <option value="ja-to-foreign">JP → Select</option>
-                <option value="foreign-to-ja">Select → JP</option>
+                <option value="ja-to-foreign">JP → Foreign</option>
+                <option value="foreign-to-ja">Foreign → JP</option>
             </select>
         </div>
 
         <div class="card" id="main-card">
-            <div id="progress" style="font-size:14px; color:#999">1 / 50</div>
-            <div id="word" class="word">...</div>
-            <div id="reading" style="color:#999; margin-bottom:20px;">...</div>
-            <div class="options" id="options-container"></div>
-            <div id="message" style="margin-top:20px; font-weight:bold; font-size:24px; height:30px;"></div>
+            <div id="quiz-content">
+                <div id="progress" style="font-size:14px; color:#999">1 / 10</div>
+                <div id="word" class="word">...</div>
+                <div id="reading" style="color:#999; margin-bottom:15px; height:20px;">...</div>
+                <div class="options" id="options-container"></div>
+                <div id="message" style="margin-top:15px; font-weight:bold; font-size:24px; height:30px; color:#FF5252;"></div>
+            </div>
+            <div id="result-content" style="display:none;">
+                <h2 id="result-msg">Kết quả</h2>
+                <div class="result-score" id="score-display">0%</div>
+                <p id="result-comment" style="font-size:18px; font-weight:bold;"></p>
+                <button class="btn-retry" onclick="initGame()">Try Again!</button>
+            </div>
         </div>
     </div>
 
@@ -72,11 +82,10 @@
 
     <script>
         const uiText = {
-            vi: { study: "Học tập", list: "Danh sách", finish: "Bạn đã hoàn thành!", jpTo: "Nhật → Việt", forTo: "Việt → Nhật" },
-            id: { study: "Belajar", list: "Daftar", finish: "Kamu sudah selesai!", jpTo: "Jepang → Indo", forTo: "Indo → Jepang" }
+            vi: { study: "Học tập", list: "Danh sách", finish: "Kết quả", comment: ["Cố lên!", "Khá lắm!", "Tuyệt vời!"], jpTo: "Nhật → Việt", forTo: "Việt → Nhật" },
+            id: { study: "Belajar", list: "Daftar", finish: "Hasil", comment: ["Semangat!", "Bagus!", "Luar Biasa!"], jpTo: "Jepang → Indo", forTo: "Indo → Jepang" }
         };
 
-        // データ (修正済み: お起きる -> おきる)
         const allData = [
             { q: "あう", r: "au", v: "gặp", i: "bertemu", g: 1 },
             { q: "いく", r: "iku", v: "đi", i: "pergi", g: 1 },
@@ -132,6 +141,8 @@
 
         let quizList = [];
         let current = 0;
+        let score = 0;
+        const TEST_COUNT = 10;
 
         function speak(text) {
             const uttr = new SpeechSynthesisUtterance();
@@ -159,32 +170,15 @@
             if(pageId === 'list') renderList();
         }
 
-        function renderList() {
-            const lang = document.getElementById("lang-select").value;
-            const container = document.getElementById('verb-list-container');
-            container.innerHTML = "";
-            [1, 2, 3].forEach(groupNum => {
-                const title = document.createElement('div');
-                title.className = 'group-title';
-                title.innerText = "Group " + groupNum;
-                container.appendChild(title);
-                allData.filter(d => d.g === groupNum).forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'list-item';
-                    div.onclick = () => speak(item.q);
-                    const meaning = (lang === "vi") ? item.v : item.i;
-                    div.innerHTML = `<div style="text-align:left"><div class="list-ja">${item.q} <span style="font-size:12px;color:#ccc">${item.r}</span></div><div style="color:#666">${meaning}</div></div><div style="color:#FF5252">🔊</div>`;
-                    container.appendChild(div);
-                });
-            });
-        }
-
         function initGame() {
             updateUI();
+            document.getElementById("quiz-content").style.display = "block";
+            document.getElementById("result-content").style.display = "none";
+            document.getElementById("message").innerText = "";
             quizList = [...allData].sort(() => Math.random() - 0.5);
             current = 0;
+            score = 0;
             showQuestion();
-            if(document.getElementById('list-page').classList.contains('active')) renderList();
         }
 
         function showQuestion() {
@@ -193,7 +187,7 @@
             const item = quizList[current];
             const card = document.getElementById("main-card");
             card.classList.remove("correct-jump");
-            document.getElementById("progress").innerText = (current + 1) + " / " + quizList.length;
+            document.getElementById("progress").innerText = (current + 1) + " / " + TEST_COUNT;
             
             let correct, opts;
             const foreignMeaning = (lang === "vi") ? item.v : item.i;
@@ -225,27 +219,68 @@
                 btn.className = "opt-btn";
                 btn.innerText = c;
                 btn.onclick = () => {
-                    if(c === correct) {
+                    const isCorrect = (c === correct);
+                    const btnAll = container.querySelectorAll('button');
+                    btnAll.forEach(b => b.style.pointerEvents = "none"); // 連打防止
+
+                    if(isCorrect) {
                         speak(item.q);
                         card.classList.add("correct-jump");
                         document.getElementById("message").innerText = "⭕ OK!";
-                        setTimeout(() => { 
-                            current++; 
-                            if(current < quizList.length) showQuestion(); 
-                            else { 
-                                alert(uiText[lang].finish); 
-                                initGame(); 
-                            }
-                            document.getElementById("message").innerText = "";
-                        }, 600);
+                        score++;
                     } else {
-                        document.getElementById("message").innerText = "❌ No";
+                        document.getElementById("message").innerText = "❌ " + correct;
                     }
+
+                    setTimeout(() => {
+                        current++;
+                        if(current < TEST_COUNT) {
+                            document.getElementById("message").innerText = "";
+                            showQuestion();
+                        } else {
+                            showResult();
+                        }
+                    }, 1000);
                 };
                 container.appendChild(btn);
             });
         }
-        initGame();
+
+        function showResult() {
+            const lang = document.getElementById("lang-select").value;
+            document.getElementById("quiz-content").style.display = "none";
+            document.getElementById("result-content").style.display = "block";
+            document.getElementById("result-msg").innerText = uiText[lang].finish;
+            document.getElementById("score-display").innerText = (score * 10) + "%";
+            
+            let commentIdx = 0;
+            if(score >= 10) commentIdx = 2;
+            else if(score >= 7) commentIdx = 1;
+            document.getElementById("result-comment").innerText = uiText[lang].comment[commentIdx];
+        }
+
+        function renderList() {
+            const lang = document.getElementById("lang-select").value;
+            const container = document.getElementById('verb-list-container');
+            container.innerHTML = "";
+            [1, 2, 3].forEach(groupNum => {
+                const title = document.createElement('div');
+                title.className = 'group-title';
+                title.innerText = "Group " + groupNum;
+                container.appendChild(title);
+                allData.filter(d => d.g === groupNum).forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'list-item';
+                    div.onclick = () => speak(item.q);
+                    const meaning = (lang === "vi") ? item.v : item.i;
+                    div.innerHTML = `<div style="text-align:left"><div class="list-ja">${item.q} <span style="font-size:12px;color:#ccc">${item.r}</span></div><div style="color:#666">${meaning}</div></div><div style="color:#FF5252">🔊</div>`;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        // 起動時に初期化
+        window.onload = initGame;
     </script>
 </body>
 </html>
