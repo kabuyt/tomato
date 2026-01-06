@@ -10,7 +10,7 @@
     <link rel="apple-touch-icon" href="images/icon.png">
     <link rel="icon" type="image/png" href="images/icon.png">
 
-    <title>トマト N5 Pro</title>
+    <title>トマト N5 Pro - Vocab Up</title>
     <style>
         body { font-family: 'Helvetica Neue', Arial, sans-serif; text-align: center; background: #FFF9E6; color: #333; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         .page { display: none; padding: 20px; min-height: 100vh; box-sizing: border-box; animation: fadeIn 0.3s; }
@@ -108,66 +108,71 @@
 
     <script>
         const allData = [
-            // 動詞 (g:1-3)
+            // --- 動詞 (g:1, 2, 3) 合計45語 ---
             { q: "あう", r: "au", v: "gặp", i: "bertemu", g: 1 },
             { q: "いく", r: "iku", v: "đi", i: "pergi", g: 1 },
-            { q: "いう", r: "iu", v: "nói", i: "berbicara", g: 1 },
-            { q: "かく", r: "kaku", v: "viết", i: "menulis", g: 1 },
-            { q: "きく", r: "kiku", v: "nghe", i: "mendengar", g: 1 },
+            { q: "かえる", r: "kaeru", v: "về", i: "pulang", g: 1 },
             { q: "のむ", r: "nomu", v: "uống", i: "minum", g: 1 },
-            { q: "よむ", r: "yomu", v: "đọc", i: "membaca", g: 1 },
             { q: "かう", r: "kau", v: "mua", i: "membeli", g: 1 },
+            { q: "きく", r: "kiku", v: "nghe", i: "mendengar", g: 1 },
+            { q: "かく", r: "kaku", v: "viết", i: "menulis", g: 1 },
+            { q: "よむ", r: "yomu", v: "đọc", i: "membaca", g: 1 },
+            { q: "いう", r: "iu", v: "nói", i: "berbicara", g: 1 },
+            { q: "まつ", r: "matsu", v: "đợi", i: "menunggu", g: 1 },
+            { q: "よぶ", r: "yobu", v: "gọi", i: "memanggil", g: 1 },
+            { q: "あそぶ", r: "asobu", v: "chơi", i: "bermain", g: 1 },
+            { q: "いそぐ", r: "isogu", v: "vội vàng", i: "terburu-buru", g: 1 },
+            { q: "およぐ", r: "oyogu", v: "bơi", i: "berenang", g: 1 },
+            { q: "はなす", r: "hanasu", v: "nói chuyện", i: "berbicara", g: 1 },
+            { q: "たつ", r: "tatsu", v: "đứng", i: "berdiri", g: 1 },
+            { q: "すわる", r: "suwaru", v: "ngồi", i: "duduk", g: 1 },
+            { q: "はいる", r: "hairu", v: "vào", i: "masuk", g: 1 },
+            { q: "うる", r: "uru", v: "bán", i: "menjual", g: 1 },
+            { q: "つくる", r: "tsukuru", v: "chế tạo/làm", i: "membuat", g: 1 },
+            { q: "しる", r: "shiru", v: "biết", i: "tahu", g: 1 },
+            { q: "わかる", r: "wakaru", v: "hiểu", i: "mengerti", g: 1 },
+            { q: "おわる", r: "owaru", v: "kết thúc", i: "selesai", g: 1 },
+            { q: "おくる", r: "okuru", v: "gửi", i: "mengirim", g: 1 },
+            { q: "かう", r: "kau", v: "nuôi (thú)", i: "memelihara", g: 1 },
+            { q: "うたう", r: "utau", v: "hát", i: "bernyanyi", g: 1 },
             { q: "おきる", r: "okiru", v: "thức dậy", i: "bangun", g: 2 },
-            { q: "たべる", r: "taberu", v: "ăn", i: "makan", g: 2 },
             { q: "ねる", r: "neru", v: "ngủ", i: "tidur", g: 2 },
+            { q: "たべる", r: "taberu", v: "ăn", i: "makan", g: 2 },
             { q: "みる", r: "miru", v: "xem/nhìn", i: "melihat", g: 2 },
+            { q: "あける", r: "akeru", v: "mở", i: "membuka", g: 2 },
+            { q: "しめる", r: "shimeru", v: "đóng", i: "menutup", g: 2 },
+            { q: "おしえる", r: "oshieru", v: "dạy", i: "mengajar", g: 2 },
+            { q: "わすれる", r: "wasureru", v: "quên", i: "lupa", g: 2 },
+            { q: "でる", r: "deru", v: "ra ngoài", i: "keluar", g: 2 },
+            { q: "かりる", r: "kariru", v: "mượn", i: "meminjam", g: 2 },
+            { q: "あげる", r: "ageru", v: "cho/tặng", i: "memberi", g: 2 },
+            { q: "くれる", r: "kureru", v: "cho (mình)", i: "memberi", g: 2 },
             { q: "くる", r: "kuru", v: "đến", i: "datang", g: 3 },
             { q: "する", r: "suru", v: "làm", i: "melakukan", g: 3 },
             { q: "べんきょうする", r: "benkyou-suru", v: "học tập", i: "belajar", g: 3 },
+            { q: "けっこんする", r: "kekkon-suru", v: "kết hôn", i: "menikah", g: 3 },
+            { q: "かいものする", r: "kaimono-suru", v: "mua sắm", i: "berbelanja", g: 3 },
+            { q: "さんぽする", r: "sanpo-suru", v: "đi dạo", i: "jalan-jalan", g: 3 },
+            { q: "コピーする", r: "kopi-suru", v: "copy", i: "fotokopi", g: 3 },
 
-            // 名詞 (g:0)
+            // --- 名詞 (g:0) ---
             { q: "がっこう", r: "gakkou", v: "trường học", i: "sekolah", g: 0 },
             { q: "せんせい", r: "sensei", v: "giáo viên", i: "guru", g: 0 },
             { q: "ともだち", r: "tomodachi", v: "bạn bè", i: "teman", g: 0 },
             { q: "みず", r: "mizu", v: "nước", i: "air", g: 0 },
-            { q: "ごはん", r: "gohan", v: "cơm/bữa ăn", i: "nasi", g: 0 },
+            { q: "ごはん", r: "gohan", v: "cơm", i: "nasi", g: 0 },
             { q: "ほん", r: "hon", v: "sách", i: "buku", g: 0 },
             { q: "くるま", r: "kuruma", v: "xe hơi", i: "mobil", g: 0 },
-            { q: "とけい", r: "tokei", v: "đồng hồ", i: "jam", g: 0 },
-            { q: "でんわ", r: "denwa", v: "điện thoại", i: "telepon", g: 0 },
-            { q: "かばん", r: "kaban", v: "cặp/túi", i: "tas", g: 0 },
 
-            // 形容詞 (g:4) - 30語追加
+            // --- 形容詞 (g:4) ---
             { q: "たかい", r: "takai", v: "cao/đắt", i: "tinggi/mahal", g: 4 },
             { q: "やすい", r: "yasui", v: "rẻ", i: "murah", g: 4 },
             { q: "おいしい", r: "oishii", v: "ngon", i: "enak", g: 4 },
             { q: "あつい", r: "atsui", v: "nóng", i: "panas", g: 4 },
             { q: "さむい", r: "samui", v: "lạnh", i: "dingin", g: 4 },
             { q: "いい", r: "ii", v: "tốt", i: "baik", g: 4 },
-            { q: "わるい", r: "warui", v: "xấu/tồi", i: "buruk", g: 4 },
-            { q: "おおきい", r: "ookii", v: "to/lớn", i: "besar", g: 4 },
-            { q: "ちいさい", r: "chiisai", v: "nhỏ", i: "kecil", g: 4 },
-            { q: "あたらしい", r: "atarashii", v: "mới", i: "baru", g: 4 },
-            { q: "ふるい", r: "furui", v: "cũ", i: "lama", g: 4 },
-            { q: "むずかしい", r: "muzukashii", v: "khó", i: "sulit", g: 4 },
-            { q: "やさしい", r: "yasashii", v: "dễ/hiền", i: "mudah", g: 4 },
-            { q: "とおい", r: "tooi", v: "xa", i: "jauh", g: 4 },
-            { q: "ちかい", r: "chikai", v: "gần", i: "dekat", g: 4 },
-            { q: "おもしろい", r: "omoshiroi", v: "thú vị", i: "menarik", g: 4 },
-            { q: "いそがしい", r: "isogashii", v: "bận rộn", i: "sibuk", g: 4 },
-            { q: "たのしい", r: "tanoshii", v: "vui vẻ", i: "senang", g: 4 },
-            { q: "しろい", r: "shiroi", v: "trắng", i: "putih", g: 4 },
-            { q: "くろい", r: "kuroi", v: "đen", i: "hitam", g: 4 },
-            { q: "あかい", r: "akai", v: "đỏ", i: "merah", g: 4 },
-            { q: "あおい", r: "aoi", v: "xanh", i: "biru", g: 4 },
-            { q: "ながい", r: "nagai", v: "dài", i: "panjang", g: 4 },
-            { q: "みじかい", r: "mijikai", v: "ngắn", i: "pendek", g: 4 },
-            { q: "ひろい", r: "hiroi", v: "rộng", i: "luas", g: 4 },
-            { q: "せまい", r: "semai", v: "hẹp", i: "sempit", g: 4 },
-            { q: "くらい", r: "kurai", v: "tối", i: "gelap", g: 4 },
-            { q: "あかるい", r: "akarui", v: "sáng", i: "terang", g: 4 },
-            { q: "おもい", r: "omoi", v: "nặng", i: "berat", g: 4 },
-            { q: "かるい", r: "karui", v: "nhẹ", i: "ringan", g: 4 }
+            { q: "おおきい", r: "ookii", v: "lớn", i: "besar", g: 4 },
+            { q: "ちいさい", r: "chiisai", v: "nhỏ", i: "kecil", g: 4 }
         ];
 
         let currentCategory = '';
@@ -223,12 +228,12 @@
             document.getElementById("message").innerText = "";
 
             let data;
-            if(currentCategory === 'verb') data = allData.filter(d => d.g > 0 && d.g < 4);
+            // 修正：gが1,2,3のものをすべて動詞として抽出
+            if(currentCategory === 'verb') data = allData.filter(d => d.g >= 1 && d.g <= 3);
             else if(currentCategory === 'noun') data = allData.filter(d => d.g === 0);
             else data = allData.filter(d => d.g === 4);
             
             quizList = [...data].sort(() => Math.random() - 0.5);
-            // テストモードの時だけ10問に絞る
             if(currentMode === 'test') quizList = quizList.slice(0, 10);
             
             current = 0;
@@ -249,7 +254,6 @@
 
             if(!isTeacher) {
                 const correct = (lang === "vi") ? item.v : item.i;
-                // 選択肢は全データからランダムに作成
                 const allOpts = allData.map(d => (lang === "vi") ? d.v : d.i);
                 let choices = [correct];
                 while(choices.length < 4) {
@@ -318,7 +322,7 @@
                 div.className = 'list-item';
                 div.onclick = () => speak(item.q);
                 const meaning = (lang === "vi") ? item.v : item.i;
-                div.innerHTML = `<div class="list-ja">${item.q} <small style="color:#ccc">${item.r}</small><br><span style="font-size:14px; font-weight:normal; color:#666">${meaning}</span></div><div>🔊</div>`;
+                div.innerHTML = `<div class="list-ja">${item.q} <small style="color:#ccc">${item.r}</small><br><span style="font-size:14px; color:#666">${meaning}</span></div><div>🔊</div>`;
                 container.appendChild(div);
             });
         }
